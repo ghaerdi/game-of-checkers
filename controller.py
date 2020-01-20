@@ -1,5 +1,5 @@
 class Controller:
-    def token(self, token, color, canEat = False, dame = False, empty = True): # 'Create' token
+    def token(self, token, color, canEat = False, dame = False, empty = None): # 'Create' token
         self.token = token
         self.color = color
         self.canEat = canEat

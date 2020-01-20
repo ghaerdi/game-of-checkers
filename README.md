@@ -1,4 +1,4 @@
-# Juego de Damas:
+<!-- # Juego de Damas:
 
 # Tomar en cuenta:
 #   -Investigar en qué consiste el juego.
@@ -21,3 +21,5 @@
 #   -Tiempo de culminación.
 #   -Evaluaciones y cursos son en “ingles” totalmente.
 #   -Debe hacer provecho del uso de GIT & Github.
+
+Run damas.py for run the programm. At the moment we are working whit the controller-->
