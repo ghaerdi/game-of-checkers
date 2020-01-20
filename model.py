@@ -26,5 +26,7 @@ class Model:
         self.view = self.cache.join(self.generated_table)
     def return_model_view(self):
         return self.view
+    def return_raw_table(self):
+        return self.Table
 
-
+model = Model()
