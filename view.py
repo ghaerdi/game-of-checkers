@@ -2,7 +2,7 @@ import os
 class View:
     def __init__(self):
         self.cache = []
-        self.trim = 155
+        self.trim = 180
     def render_view(self, view):
         self.cache.append(view)
         if len(self.cache[-1]) <= self.trim:
