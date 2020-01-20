@@ -20,4 +20,5 @@ class Controller:
         return self.view
     def get_view_to_render(self, view):
         self.view = view
-    # def move_diagonal_up_left(self):
+    def move_diagonal_up_left(self):
+        pass
