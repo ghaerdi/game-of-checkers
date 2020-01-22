@@ -28,13 +28,12 @@ class Model:
                                 self.Table[instructions[0]][instructions[1]] = '⬛'
                                 self.Table[instructions[0] + 1][instructions[1] + 1] = '⬛'
                                 self.Table[instructions[2]][instructions[3]] = self.tokens_cache
-                            if instructions[4] == 'l':
-                                if self.Table[instructions[0] + 1][instructions[1] - 1] == '⭕' and self.Table[instructions[0] + 2][instructions[1] - 2] == '⬛':
-                                    self.Table[instructions[0]][instructions[1]] = '⬛'
-                                    self.Table[instructions[0] + 1][instructions[1] - 1] = '⬛'
-                                    self.Table[instructions[2]][instructions[3]] = self.tokens_cache
+                        if instructions[4] == 'l':
+                            if self.Table[instructions[0] + 1][instructions[1] - 1] == '⭕' and self.Table[instructions[0] + 2][instructions[1] - 2] == '⬛':
+                                self.Table[instructions[0]][instructions[1]] = '⬛'
+                                self.Table[instructions[0] + 1][instructions[1] - 1] = '⬛'
+                                self.Table[instructions[2]][instructions[3]] = self.tokens_cache
                     if self.tokens_cache == '⭕':
-                        print('input here')
                         if instructions[4] == 'r':
                             if self.Table[instructions[0] - 1][instructions[1] + 1] == '⚫' and self.Table[instructions[0] - 2][instructions[1] + 2] == '⬛':
                                 self.Table[instructions[0]][instructions[1]] = '⬛'
@@ -60,5 +59,10 @@ class Model:
         return self.view
     def return_raw_table(self):
         return self.Table
-    def tested(self):
-        print(len(self.Table[4][0]))
+    def return_render_view(self):
+        for j in self.Table:
+            for i in j:
+                self.generated_table.append(i)
+        self.generated_table.insert(0, '')
+        self.view = self.cache.join(self.generated_table)
+        return self.view
