@@ -16,7 +16,7 @@ class Model:
         self.view = ''
         self.testing = None
     def input_instructions(self, instructions):
-        # print(instructions)
+        print(instructions)
         self.testing = instructions
         try:
             self.tokens_cache = self.Table[instructions[0]][instructions[1]]
@@ -30,10 +30,10 @@ class Model:
             self.view = self.cache.join(self.generated_table)
             self.testing = instructions
         except:
-            print('error: ')
+            print('error: model --> data faild')
     def return_model_view(self):
         return self.view
     def return_raw_table(self):
         return self.Table
-    def tested(self, tested):
-        print(tested)
+    def tested(self):
+        print(len(self.Table[4][0]))
