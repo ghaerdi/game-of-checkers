@@ -16,14 +16,26 @@ class Controller:
         if self.__valid_to_move():
             if self.table[self.position_token_x][self.position_token_y] == '⚫' and self.next_not_block(self.direction):
                 if self.direction == 'l':
-                    return self.position_token_x, self.position_token_y, (self.position_token_x + 1), (self.position_token_y - 1)
+                    if self.table[self.position_token_x + 1][self.position_token_y - 1] == '⭕' and self.table[self.position_token_x + 2][self.position_token_y - 2] == '⬛':
+                        return self.position_token_x, self.position_token_y, (self.position_token_x + 2), (self.position_token_y - 2), 'l'
+                    else:
+                        return self.position_token_x, self.position_token_y, (self.position_token_x + 1), (self.position_token_y - 1)
                 elif self.direction == 'r':
-                    return self.position_token_x, self.position_token_y, (self.position_token_x + 1), (self.position_token_y + 1)
+                    if self.table[self.position_token_x + 1][self.position_token_y + 1] == '⭕' and self.table[self.position_token_x + 2][self.position_token_y + 2] == '⬛':
+                        return self.position_token_x, self.position_token_y, (self.position_token_x + 2), (self.position_token_y + 2), 'r'
+                    else:
+                        return self.position_token_x, self.position_token_y, (self.position_token_x + 1), (self.position_token_y + 1)
             if self.table[self.position_token_x][self.position_token_y] == '⭕' and self.next_not_block(self.direction):
                 if self.direction == 'l':
-                    return self.position_token_x, self.position_token_y, (self.position_token_x - 1), (self.position_token_y - 1)
+                    if self.table[self.position_token_x - 1][self.position_token_y - 1] == '⚫' and self.table[self.position_token_x - 2][self.position_token_y - 2] == '⬛':
+                        return self.position_token_x, self.position_token_y, (self.position_token_x - 2), (self.position_token_y - 2), 'l'
+                    else:
+                        return self.position_token_x, self.position_token_y, (self.position_token_x - 1), (self.position_token_y - 1)
                 elif self.direction == 'r':
-                    return self.position_token_x, self.position_token_y, (self.position_token_x - 1), (self.position_token_y + 1)
+                    if self.table[self.position_token_x - 1][self.position_token_y + 1] == '⚫' and self.table[self.position_token_x - 2][self.position_token_y + 2] == '⬛':
+                        return self.position_token_x, self.position_token_y, (self.position_token_x - 2), (self.position_token_y + 2), 'r'
+                    else:
+                        return self.position_token_x, self.position_token_y, (self.position_token_x - 1), (self.position_token_y + 1)
     def next_not_block(self, direction):
         if self.table[self.position_token_x][self.position_token_y] == '⚫':
             return self.__if_token_is_black(self.table[self.position_token_x][self.position_token_y], direction)
