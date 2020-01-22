@@ -7,12 +7,8 @@ class Controller:
         self.token = None
     def get_table(self, table): # Get the table
         self.table = table
-    def __token_to_move(self, position_token_x, position_token_y, direction): # Select a token whit the actual position
-        self.position_token_x = int(position_token_x)
-        self.position_token_y = int(position_token_y)
-        self.direction = direction.lower()
     def move_token(self):
-        self.__token_to_move(input(': '), input(': '), input('direction: '))
+        self.__token_to_move(input('Coordinate: '), input('Direction: '))
         if self.__valid_to_move():
             if self.table[self.position_token_x][self.position_token_y] == '⚫' and self.next_not_block(self.direction):
                 if self.direction == 'l':
@@ -94,3 +90,24 @@ class Controller:
             return False
         else:
             return True
+    def __token_to_move(self, input_coordinate, direction): # Select a token whit the actual position
+        self.input_coordinate = input_coordinate
+        self.direction = direction.lower()
+        # Table of coordinates
+        abc, table_coordinates = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], []
+        for i in range(1, 9):
+            for l in abc:
+                table_coordinates.append(l + str(i))
+        # Checking input and coordinates
+        coordinate_x = 0
+        coordinate_y = 1
+        for all_coordinates in table_coordinates:
+            if input_coordinate == all_coordinates:
+                self.position_token_x = coordinate_x
+                self.position_token_y = coordinate_y
+            else:
+                if coordinate_y < 8:
+                    coordinate_y = coordinate_y + 1
+                else:
+                    coordinate_y = 1
+                    coordinate_x = coordinate_x + 1
