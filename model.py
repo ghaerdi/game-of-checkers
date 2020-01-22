@@ -17,12 +17,37 @@ class Model:
         self.testing = None
     def input_instructions(self, instructions):
         print(instructions)
-        self.testing = instructions
         try:
             self.tokens_cache = self.Table[instructions[0]][instructions[1]]
             if self.tokens_cache != '⬛' or self.tokens_cache != '⬜':
-                self.Table[instructions[0]][instructions[1]] = '⬛'
-                self.Table[instructions[2]][instructions[3]] = self.tokens_cache
+            # <-------------------------------------------------->
+                if len(instructions) == 5:
+                    if self.tokens_cache == '⚫':
+                        if instructions[4] == 'r':
+                            if self.Table[instructions[0] + 1][instructions[1] + 1] == '⭕' and self.Table[instructions[0] + 2][instructions[1] + 2] == '⬛':
+                                self.Table[instructions[0]][instructions[1]] = '⬛'
+                                self.Table[instructions[0] + 1][instructions[1] + 1] = '⬛'
+                                self.Table[instructions[2]][instructions[3]] = self.tokens_cache
+                            if instructions[4] == 'l':
+                                if self.Table[instructions[0] + 1][instructions[1] - 1] == '⭕' and self.Table[instructions[0] + 2][instructions[1] - 2] == '⬛':
+                                    self.Table[instructions[0]][instructions[1]] = '⬛'
+                                    self.Table[instructions[0] + 1][instructions[1] - 1] = '⬛'
+                                    self.Table[instructions[2]][instructions[3]] = self.tokens_cache
+                    if self.tokens_cache == '⭕':
+                        print('input here')
+                        if instructions[4] == 'r':
+                            if self.Table[instructions[0] - 1][instructions[1] + 1] == '⚫' and self.Table[instructions[0] - 2][instructions[1] + 2] == '⬛':
+                                self.Table[instructions[0]][instructions[1]] = '⬛'
+                                self.Table[instructions[0] - 1][instructions[1] + 1] = '⬛'
+                                self.Table[instructions[2]][instructions[3]] = self.tokens_cache
+                        if instructions[4] == 'l':
+                            if self.Table[instructions[0] - 1][instructions[1] - 1] == '⚫' and self.Table[instructions[0] - 2][instructions[1] - 2] == '⬛':
+                                self.Table[instructions[0]][instructions[1]] = '⬛'
+                                self.Table[instructions[0] - 1][instructions[1] - 1] = '⬛'
+                                self.Table[instructions[2]][instructions[3]] = self.tokens_cache
+                else:
+                    self.Table[instructions[0]][instructions[1]] = '⬛'
+                    self.Table[instructions[2]][instructions[3]] = self.tokens_cache
             for j in self.Table:
                 for i in j:
                     self.generated_table.append(i)

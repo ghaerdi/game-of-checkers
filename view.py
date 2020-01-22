@@ -12,3 +12,6 @@ class View:
             os.system('clear')
             print(self.cache[-1][self.cache[-1].rfind('\n') - self.trim:self.cache[-1].rfind('\n')])
         self.cache[:]
+    def rende_history(self):
+        os.system('clear')
+        print(self.cache[-1])
