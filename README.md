@@ -22,4 +22,6 @@
 #   -Evaluaciones y cursos son en “ingles” totalmente.
 #   -Debe hacer provecho del uso de GIT & Github.
 
-Run damas.py for run the programm. At the moment we are working whit the controller-->
+Run damas.py. Write a coordinate (example: B3) for select a token. Write l (for left) or r (for right)
+IMPORTANT: for select a token write in majuscule and give a direction writing in small letter.
+-->
