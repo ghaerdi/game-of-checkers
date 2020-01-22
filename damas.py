@@ -9,4 +9,6 @@ for i in range(15):
     new_controller.get_table(new_model.return_raw_table())
     new_model.input_instructions(new_controller.move_token())
     new_view.render_view(new_model.return_model_view())
-    # new_model.tested(new_controller.move_token())
+#     new_model.tested(new_controller.move_token())
+    # new_model.tested()
+#     new_view.render_view(new_model.return_model_view())
