@@ -49,8 +49,8 @@ class Controller:
         #             return True
         #         if move == '⚫' and self.table[self.position_token_x - 2][self.position_token_y - 2] == '⬛':
         #             return False
-    def __if_token_is_black(self, corlor_token, direction):
-        if corlor_token == '⚫':
+    def __if_token_is_black(self, color_token, direction):
+        if color_token == '⚫':
             if direction == 'r':
                 move = self.table[self.position_token_x + 1][self.position_token_y + 1]
                 if move == '⬛':
@@ -71,10 +71,10 @@ class Controller:
                     return True
                 elif move == '⭕' and self.table[self.position_token_x + 2][self.position_token_y - 2] != '⬛':
                     return False
-    def __if_token_is_red(self, corlor_token, direction):
-        if corlor_token == '⭕':
-            if direction = 'r':
-                move = self.table[self.position_token_x + 1][self.position_token_y + 1]
+    def __if_token_is_red(self, color_token, direction):
+        # if color_token == '⭕':
+        #     if direction = 'r':
+        #         move = self.table[self.position_token_x + 1][self.position_token_y + 1]
         pass
     def __valid_to_move(self):
         if self.table[self.position_token_x][self.position_token_y] == '⬜' or self.table[self.position_token_x][self.position_token_y] == '⬛':
