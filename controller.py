@@ -91,7 +91,7 @@ class Controller:
         else:
             return True
     def __token_to_move(self, input_coordinate, direction): # Select a token whit the actual position
-        self.input_coordinate = input_coordinate
+        self.input_coordinate = input_coordinate.upper()
         self.direction = direction.lower()
         # Table of coordinates
         abc, table_coordinates = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], []
