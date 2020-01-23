@@ -1,4 +1,4 @@
-<!-- # Juego de Damas:
+# Juego de Damas:
 
 # Tomar en cuenta:
 #   -Investigar en qué consiste el juego.
@@ -24,4 +24,3 @@
 
 Run damas.py. Write a coordinate (example: B3) for select a token. Write l (for left) or r (for right)
 IMPORTANT: for select a token write in majuscule and give a direction writing in small letter.
--->
