@@ -189,50 +189,50 @@ class Controller:
                 move = self.table[self.position_token_x - 1][self.position_token_y + 1]
                 if move == '⬛':
                     return True
-                elif move == '⭕':
+                elif move == '⭕' or move == 'R':
                     return False
                 elif move == '⚫' or move == 'B':
                     if self.table[self.position_token_x - 2][self.position_token_y + 2] == '⬛':
                         return True
-                elif move == '⚫' and self.table[self.position_token_x - 2][self.position_token_y + 2] != '⬛':
-                    return False
+                elif move == '⚫' or move == 'B':
+                    if self.table[self.position_token_x - 2][self.position_token_y + 2] != '⬛':
+                        return False
             elif direction == 'l' or direction == 'lu':
                 move = self.table[self.position_token_x - 1][self.position_token_y - 1]
                 if move == '⬛':
                     return True
-                if self.table[self.position_token_x - 1][self.position_token_y - 1] == '5':
-                    return False
-                elif move == '⭕':
+                elif move == '⭕' or move == 'R':
                     return False
                 elif move == '⚫' or move == 'B':
                     if self.table[self.position_token_x - 2][self.position_token_y - 2] == '⬛':
                         return True
-                elif move == '⚫' and self.table[self.position_token_x - 2][self.position_token_y - 2] != '⬛':
-                    return False
+                elif move == '⚫' or move == 'B':
+                    if self.table[self.position_token_x - 2][self.position_token_y - 2] != '⬛':
+                        return False
             elif direction =='rd':
                 move = self.table[self.position_token_x + 1][self.position_token_y + 1]
                 if move == '⬛':
                     return True
-                elif move == '⭕':
+                elif move == '⭕' or move == 'R':
                     return False
                 elif move == '⚫' or move == 'B':
                     if self.table[self.position_token_x + 2][self.position_token_y + 2] == '⬛':
                         return True
-                elif move == '⚫' and self.table[self.position_token_x + 2][self.position_token_y + 2] != '⬛':
-                    return False
+                elif move == '⚫' or move == 'B':
+                    if self.table[self.position_token_x + 2][self.position_token_y + 2] != '⬛':
+                        return False
             elif direction == 'ld':
                 move = self.table[self.position_token_x + 1][self.position_token_y - 1]
                 if move == '⬛':
                     return True
-                if self.table[self.position_token_x + 1][self.position_token_y - 1] == '5':
-                    return False
-                elif move == '⭕':
+                elif move == '⭕' or move == 'R':
                     return False
                 elif move == '⚫' or move == 'B':
                     if self.table[self.position_token_x + 2][self.position_token_y - 2] == '⬛':
                         return True
-                elif move == '⚫' and self.table[self.position_token_x + 2][self.position_token_y - 2] != '⬛':
-                    return False
+                elif move == '⚫' or move == 'B':
+                    if self.table[self.position_token_x + 2][self.position_token_y - 2] != '⬛':
+                        return False
 
     def __instructions_black_dame_for_model(self, direction):
         if direction == 'l' or direction == 'ld':
@@ -264,24 +264,30 @@ class Controller:
         if direction == 'l' or direction == 'lu':
             if self.table[self.position_token_x - 1][self.position_token_y - 1] == '⚫' or self.table[self.position_token_x - 1][self.position_token_y - 1] == 'B':
                 if self.table[self.position_token_x - 2][self.position_token_y - 2] == '⬛':
-                    return self.position_token_x, self.position_token_y, (self.position_token_x - 2), (self.position_token_y - 2), 'l'
+                    if direction == 'l':
+                        return self.position_token_x, self.position_token_y, (self.position_token_x - 2), (self.position_token_y - 2), 'l'
+                    elif direction == 'lu':
+                        return self.position_token_x, self.position_token_y, (self.position_token_x - 2), (self.position_token_y - 2), 'lu'
             else:
                 return self.position_token_x, self.position_token_y, (self.position_token_x - 1), (self.position_token_y - 1)
         elif direction == 'r' or direction == 'ru':
             if self.table[self.position_token_x - 1][self.position_token_y + 1] == '⚫' or self.table[self.position_token_x - 1][self.position_token_y + 1] == 'B':
                 if self.table[self.position_token_x - 2][self.position_token_y + 2] == '⬛':
-                    return self.position_token_x, self.position_token_y, (self.position_token_x - 2), (self.position_token_y + 2), 'r'
+                    if direction == 'r':
+                        return self.position_token_x, self.position_token_y, (self.position_token_x - 2), (self.position_token_y + 2), 'r'
+                    elif direction == 'ru':
+                        return self.position_token_x, self.position_token_y, (self.position_token_x - 2), (self.position_token_y + 2), 'ru'
             else:
                 return self.position_token_x, self.position_token_y, (self.position_token_x - 1), (self.position_token_y + 1)
         elif direction == 'ld':
             if self.table[self.position_token_x + 1][self.position_token_y - 1] == '⚫' or self.table[self.position_token_x + 1][self.position_token_y - 1] == 'B':
                 if self.table[self.position_token_x + 2][self.position_token_y - 2] == '⬛':
-                    return self.position_token_x, self.position_token_y, (self.position_token_x + 2), (self.position_token_y - 2), 'l'
+                    return self.position_token_x, self.position_token_y, (self.position_token_x + 2), (self.position_token_y - 2), 'ld'
             else:
                 return self.position_token_x, self.position_token_y, (self.position_token_x + 1), (self.position_token_y - 1)
         elif direction == 'rd':
             if self.table[self.position_token_x + 1][self.position_token_y + 1] == '⚫' or self.table[self.position_token_x + 1][self.position_token_y + 1] == 'B':
                 if self.table[self.position_token_x + 2][self.position_token_y + 2] == '⬛':
-                    return self.position_token_x, self.position_token_y, (self.position_token_x + 2), (self.position_token_y + 2), 'r'
+                    return self.position_token_x, self.position_token_y, (self.position_token_x + 2), (self.position_token_y + 2), 'rd'
             else:
                 return self.position_token_x, self.position_token_y, (self.position_token_x + 1), (self.position_token_y + 1)

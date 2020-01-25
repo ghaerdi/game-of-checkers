@@ -1,7 +1,6 @@
 from controller import Controller
 from model import Model
 from view import View
-import time
 new_controller = Controller()
 new_model = Model()
 new_view = View(new_model.return_render_view())

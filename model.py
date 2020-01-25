@@ -3,9 +3,9 @@ class Model:
         self.Table = [
             ['1','⬜', '⬛', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
             ['2','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⬛' ,'⬜', '\n'],
-            ['3','⬜', '⭕', '⬜', '⭕', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['4','⬛', '⬜', 'R', '⬜', '⚫', '⬜', 'B' ,'⬜', '\n'],
-            ['5','⬜', '⭕', '⬜', '⭕', '⬜', '⬛', '⬜' ,'⬛', '\n'],
+            ['3','⬜', '⚫', '⬜', '⚫', '⬜', '⬛', '⬜' ,'⬛', '\n'],
+            ['4','⬛', '⬜', 'R', '⬜', '⬛', '⬜', 'R' ,'⬜', '\n'],
+            ['5','⬜', '⚫', '⬜', '⚫', '⬜', '⬛', '⬜' ,'⬛', '\n'],
             ['6','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⬛' ,'⬜', '\n'],
             ['7','⬜', '⬛', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
             ['8','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⬛' ,'⬜', '\n'],
@@ -117,7 +117,7 @@ class Model:
                         self.Table[instructions[0] - 1][instructions[1] - 1] = '⬛'
                         self.Table[instructions[2]][instructions[3]] = self.tokens_cache
     def __token_red_dame_instructions(self, instructions):
-        if self.tokens_cache == '⭕':
+        if self.tokens_cache == 'R':
             if instructions[4] == 'r' or instructions[4] == 'ru':
                 if self.Table[instructions[0] - 1][instructions[1] + 1] == '⚫' or self.Table[instructions[0] - 1][instructions[1] + 1] == 'B':
                     if self.Table[instructions[0] - 2][instructions[1] + 2] == '⬛':
