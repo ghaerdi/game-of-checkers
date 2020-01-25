@@ -22,5 +22,16 @@
 #   -Evaluaciones y cursos son en “ingles” totalmente.
 #   -Debe hacer provecho del uso de GIT & Github.
 
-Run damas.py. Write a coordinate (example: B3) for select a token. Write l (for left) or r (for right)
-IMPORTANT: for select a token write in majuscule and give a direction writing in small letter.
+Run damas.py for play.
+Coordinate: Select a token whit the table coordinate. (for example C4. In big letter)
+Direction: Write a direction whit the initial character.
+
+All direction for normal tokens:
+r = rigth
+l = left
+
+All direction for dame tokens:
+ru = rigth up
+lu = left up
+rd = rigth down
+ru = rigth up
