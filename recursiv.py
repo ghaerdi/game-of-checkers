@@ -72,4 +72,4 @@ stt = stt.join(triangle)
 print(stt)
 # count1 = 0
 # count2 = 0
-# while 
+# while

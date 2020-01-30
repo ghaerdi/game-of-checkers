@@ -27,101 +27,109 @@ class Controller:
         elif self.table[self.position_token_x][self.position_token_y] == '⭕' or self.table[self.position_token_x][self.position_token_y] == 'R':
             return self.__if_valid(self.table[self.position_token_x][self.position_token_y], direction)
         else:
-            # return 'if valid faild'
-            print('error: -> no pass next not block')
+            return 'if valid faild'
+            # print('error: -> no pass next not block')
     def __if_valid(self, token, direction):
         if token == '⚫' or token == 'B':
-            if direction == 'rd':
-                move = self.table[self.position_token_x + 1][self.position_token_y + 1]
-                if move == '⬛':
-                    return True
-                elif move == '⚫' or move == 'B':
-                    return False
-                elif move == '⭕' or move == 'R':
-                    if self.table[self.position_token_x + 2][self.position_token_y + 2] == '⬛':
-                        return True
-                else:
-                    return False
-            elif direction == 'ld':
-                move = self.table[self.position_token_x + 1][self.position_token_y - 1]
-                if move == '⬛':
-                    return True
-                elif move == '⚫' or move == 'B':
-                    return False
-                elif move == '⭕' or move == 'R':
-                    if self.table[self.position_token_x + 2][self.position_token_y - 2] == '⬛':
-                        return True
-                else:
-                    return False
+            return self.__if_valid_black(token, direction)
         if token == '⭕' or token == 'R':
-            if direction == 'ru':
-                move = self.table[self.position_token_x - 1][self.position_token_y + 1]
-                if move == '⬛':
-                    return True
-                elif move == '⭕' or move == 'R':
-                    return False
-                elif move == '⚫' or move == 'B':
-                    if self.table[self.position_token_x - 2][self.position_token_y + 2] == '⬛':
-                        return True
-                else:
-                    return False
-            elif direction == 'lu':
-                move = self.table[self.position_token_x - 1][self.position_token_y - 1]
-                if move == '⬛':
-                    return True
-                elif move == '⭕' or move == 'R':
-                    return False
-                elif move == '⚫' or move == 'B':
-                    if self.table[self.position_token_x - 2][self.position_token_y - 2] == '⬛':
-                        return True
-                else:
-                    return False
+            return self.__if_valid_red(token, direction)
         if token == 'B':
-            if direction == 'ru':
-                move = self.table[self.position_token_x - 1][self.position_token_y + 1]
-                if move == '⬛':
-                    return True
-                elif move == '⚫' or move == 'B':
-                    return False
-                elif move == '⭕' or move == 'R':
-                    if self.table[self.position_token_x - 2][self.position_token_y + 2] == '⬛':
-                        return True
-                else:
-                    return False
-            elif direction == 'lu':
-                move = self.table[self.position_token_x - 1][self.position_token_y - 1]
-                if move == '⬛':
-                    return True
-                elif move == '⚫' or move == 'B':
-                    return False
-                elif move == '⭕' or move == 'R':
-                    if self.table[self.position_token_x - 2][self.position_token_y - 2] == '⬛':
-                        return True
-                else:
-                    return False
+            return self.__valid_to_black_dame(token, direction)
         if token == 'R':
-            if direction == 'rd':
-                move = self.table[self.position_token_x + 1][self.position_token_y + 1]
-                if move == '⬛':
+            return self.__valid_to_red_dame(token, direction)
+    def __if_valid_black(self, token, direction):
+        if direction == 'rd':
+            move = self.table[self.position_token_x + 1][self.position_token_y + 1]
+            if move == '⬛':
+                return True
+            elif move == '⚫' or move == 'B':
+                return False
+            elif move == '⭕' or move == 'R':
+                if self.table[self.position_token_x + 2][self.position_token_y + 2] == '⬛':
                     return True
-                elif move == '⭕' or move == 'R':
-                    return False
-                elif move == '⚫' or move == 'B':
-                    if self.table[self.position_token_x + 2][self.position_token_y + 2] == '⬛':
-                        return True
-                else:
-                    return False
-            elif direction == 'ld':
-                move = self.table[self.position_token_x + 1][self.position_token_y - 1]
-                if move == '⬛':
+            else:
+                return False
+        elif direction == 'ld':
+            move = self.table[self.position_token_x + 1][self.position_token_y - 1]
+            if move == '⬛':
+                return True
+            elif move == '⚫' or move == 'B':
+                return False
+            elif move == '⭕' or move == 'R':
+                if self.table[self.position_token_x + 2][self.position_token_y - 2] == '⬛':
                     return True
-                elif move == '⭕' or move == 'R':
-                    return False
-                elif move == '⚫' or move == 'B':
-                    if self.table[self.position_token_x + 2][self.position_token_y - 2] == '⬛':
-                        return True
-                else:
-                    return False
+            else:
+                return False
+    def __if_valid_red(self, token, direction):
+        if direction == 'ru':
+            move = self.table[self.position_token_x - 1][self.position_token_y + 1]
+            if move == '⬛':
+                return True
+            elif move == '⭕' or move == 'R':
+                return False
+            elif move == '⚫' or move == 'B':
+                if self.table[self.position_token_x - 2][self.position_token_y + 2] == '⬛':
+                    return True
+            else:
+                return False
+        elif direction == 'lu':
+            move = self.table[self.position_token_x - 1][self.position_token_y - 1]
+            if move == '⬛':
+                return True
+            elif move == '⭕' or move == 'R':
+                return False
+            elif move == '⚫' or move == 'B':
+                if self.table[self.position_token_x - 2][self.position_token_y - 2] == '⬛':
+                    return True
+            else:
+                return False
+    def __valid_to_black_dame(self, token, direction):
+        if direction == 'ru':
+            move = self.table[self.position_token_x - 1][self.position_token_y + 1]
+            if move == '⬛':
+                return True
+            elif move == '⚫' or move == 'B':
+                return False
+            elif move == '⭕' or move == 'R':
+                if self.table[self.position_token_x - 2][self.position_token_y + 2] == '⬛':
+                    return True
+            else:
+                return False
+        elif direction == 'lu':
+            move = self.table[self.position_token_x - 1][self.position_token_y - 1]
+            if move == '⬛':
+                return True
+            elif move == '⚫' or move == 'B':
+                return False
+            elif move == '⭕' or move == 'R':
+                if self.table[self.position_token_x - 2][self.position_token_y - 2] == '⬛':
+                    return True
+            else:
+                return False
+    def __valid_to_red_dame(self, token, direction):
+        if direction == 'rd':
+            move = self.table[self.position_token_x + 1][self.position_token_y + 1]
+            if move == '⬛':
+                return True
+            elif move == '⭕' or move == 'R':
+                return False
+            elif move == '⚫' or move == 'B':
+                if self.table[self.position_token_x + 2][self.position_token_y + 2] == '⬛':
+                    return True
+            else:
+                return False
+        elif direction == 'ld':
+            move = self.table[self.position_token_x + 1][self.position_token_y - 1]
+            if move == '⬛':
+                return True
+            elif move == '⭕' or move == 'R':
+                return False
+            elif move == '⚫' or move == 'B':
+                if self.table[self.position_token_x + 2][self.position_token_y - 2] == '⬛':
+                    return True
+            else:
+                return False
     def __valid_to_move(self):
         if self.table[self.position_token_x][self.position_token_y] != '⬜' and self.table[self.position_token_x][self.position_token_y] != '⬛':
             return True
