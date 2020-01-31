@@ -4,11 +4,11 @@ class Model:
             ['1','⬜', '⚫', '⬜', '⚫', '⬜', '⚫', '⬜' ,'⚫', '\n'],
             ['2','B', '⬜', '⚫', '⬜', '⚫', '⬜', '⚫' ,'⬜', '\n'],
             ['3','⬜', '⭕', '⬜', '⚫', '⬜', '⚫', '⬜' ,'⚫', '\n'],
-            ['4','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⬛' ,'⬜', '\n'],
+            ['4','⬛', '⬜', '⬛', '⬜', '⭕', '⬜', '⬛' ,'⬜', '\n'],
             ['5','⬜', '⬛', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['6','⭕', '⬜', '⭕', '⬜', 'R', '⬜', '⭕' ,'⬜', '\n'],
+            ['6','⭕', '⬜', '⭕', '⬜', '⭕', '⬜', '⭕' ,'⬜', '\n'],
             ['7','⬜', '⭕', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⭕', '\n'],
-            ['8','⭕', '⬜', '⬛', '⬜', '⬛', '⬜', '⬛' ,'⬜', '\n'],
+            ['8','⭕', '⬜', '⬛', '⬜', '⬛', '⬜', '⭕' ,'⬜', '\n'],
             [' ','A', 'B', 'C', 'D', 'E', 'F', 'G' ,'H', '\n']
         ]
         self.generated_table = []
@@ -16,10 +16,11 @@ class Model:
         self.view = ''
         self.error = None
     def input_instructions(self, instructions):
+        print(instructions)
         try:
             self.tokens_cache = self.Table[instructions[0]][instructions[1]]
             if self.tokens_cache != '⬛' or self.tokens_cache != '⬜':
-            # <----------------------for recursiv eat---------------------------->
+            # <----------------------for recursive eat---------------------------->
                 if len(instructions) == 5:
                     self.eat_recursive(instructions[0], instructions[1], instructions[4])
                 else:
@@ -37,11 +38,11 @@ class Model:
             self.view = self.cache.join(self.generated_table)
             self.testing = instructions
         except:
-            print('error: model --> data faild')
+            print(instructions)
     def return_model_view(self):
         return self.view # return compile table for view
     def return_raw_table(self):
-        return self.Table # return raw tabl for controller
+        return self.Table # return raw table for controller
     def return_render_view(self):# compiler
         for j in self.Table:
             for i in j:
@@ -59,7 +60,7 @@ class Model:
                         self.Table[cordinate0 + 1][cordinate1 + 1] = '⬛'
                         if (cordinate0 + 2) == 7:
                             self.Table[cordinate0 + 2][cordinate1 + 2] = 'B'
-                            return ''
+                            # return ''
                         else:
                             self.Table[cordinate0 + 2][cordinate1 + 2] = self.token
                         return self.eat_recursive((cordinate0 + 2), (cordinate1 + 2), 'rd')
@@ -72,7 +73,7 @@ class Model:
                         self.Table[cordinate0 + 1][cordinate1 - 1] = '⬛'
                         if (cordinate0 + 2) == 7: # if you manage to reach the opposite side he become a dame
                             self.Table[cordinate0 + 2][cordinate1 - 2] = 'B'
-                            return ''
+                            # return ''
                         else:
                             self.Table[cordinate0 + 2][cordinate1 - 2] = self.token
                         return self.eat_recursive((cordinate0 + 2), (cordinate1 - 2), 'ld')
@@ -87,7 +88,7 @@ class Model:
                         self.Table[cordinate0 - 1][cordinate1 + 1] = '⬛'
                         if (cordinate0 - 2) == 0:
                             self.Table[cordinate0 - 2][cordinate1 + 2] = 'R'
-                            return ''
+                            # return ''
                         else:
                             self.Table[cordinate0 - 2][cordinate1 + 2] = self.token
                         return self.eat_recursive((cordinate0 - 2), (cordinate1 + 2), 'ru')
@@ -99,8 +100,8 @@ class Model:
                         self.Table[cordinate0][cordinate1] = '⬛'
                         self.Table[cordinate0 - 1][cordinate1 - 1] = '⬛'
                         if (cordinate0 - 2) == 0: # if you manage to reach the opposite side he become a dame
-                            self.Table[cordinate0 - 7][cordinate1 - 2] = 'R'
-                            return ''
+                            self.Table[cordinate0 - 2][cordinate1 - 2] = 'R'
+                            # return ''
                         else:
                             self.Table[cordinate0 - 2][cordinate1 - 2] = self.token
                         return self.eat_recursive((cordinate0 - 2), (cordinate1 - 2), 'lu')
@@ -121,7 +122,7 @@ class Model:
                     if self.Table[cordinate0 - 2][cordinate1 - 2] == '⬛':
                         self.Table[cordinate0][cordinate1] = '⬛'
                         self.Table[cordinate0 - 1][cordinate1 - 1] = '⬛'
-                        self.Table[cordinate0 - 7][cordinate1 - 2] = self.token
+                        self.Table[cordinate0 - 2][cordinate1 - 2] = self.token
                         return self.eat_recursive((cordinate0 - 2), (cordinate1 - 2), 'lu')
                     if self.Table[cordinate0 - 2][cordinate1 - 2] != '⬛':
                         return self.eat_recursive((cordinate0), (cordinate1), 'rd')
