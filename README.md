@@ -1,37 +1,19 @@
-# Juego de Damas:
+# 🎯 Chinese checkers
 
-# Tomar en cuenta:
-#   -Investigar en qué consiste el juego.
-#   -Que el proyecto sea hecho a partir de lo aprendido en el curso de programación.
-#   -No enfocarse en gráficos ni nada relacionado a eso, solo a nivel de lógica.
-#   -Calidad del código.
-#   -Funcionamiento.
+##### Made by [Erick sosa](https://github.com/ericksosagarcia) and [Gil Santana](https://github.com/ghaerdi)
 
-# Estructura lógica:
-#   -Debe desarrollar la lógica para repartir los Damas.
-#   -Debe implementar la lógica del juego de Damas.
-#   -Debe tener un sistema de turnos y jugadores.
-#   -Debe tener sistema de puntuación según lo establecen las reglas del juego.
-#   -Propósito: Aplicar toda la estructura lógica con a través del uso del paradigma de Orientación a Objetos.
+![Chinese checkers](https://i.ibb.co/dgb4M68/Captura-de-pantalla-de-2020-02-02-17-47-59.png)
 
-# Criterios de evaluación.
-#   -No aceptamos plagio de código.
-#   -Culminación total del ejercicio.
-#   -Evaluar la lógica/resolución de problemas.
-#   -Tiempo de culminación.
-#   -Evaluaciones y cursos son en “ingles” totalmente.
-#   -Debe hacer provecho del uso de GIT & Github.
+## 🐧 Only run in linux or unix
 
-Run damas.py for play.
-Coordinate: Select a token whit the table coordinate. (for example C4. In big letter)
-Direction: Write a direction whit the initial character.
+## How to play 🎮
+ ⚫ **Select a coordinate for example A2 and then assign an address**
+ ✅ **The Black pieces have "rd" (right down) and "ld" (left down)**
+ ✅ **The Red pieces have "ru" (right up) and "lu" (left up)**
+ ✅ **The Dames have all directions  ( ru, lu, rd, ld )**
 
-All direction for normal tokens:
-r = rigth
-l = left
-
-All direction for dame tokens:
-ru = rigth up
-lu = left up
-rd = rigth down
-ru = rigth up
+### How to run and requirements
+  * visual studio code
+  * python 3.x ( 3.6.x "recommended")
+  * run [game.py]() in the integrated terminal ( bash or zsh )
+## 🚧 The elements of the board may appear different depending on the operating system or the coding of the terminal "zsh or bash is recommended"
