@@ -124,9 +124,9 @@ class Controller:
         if self.table[self.position_token_x][self.position_token_y] != '⬜' and self.table[self.position_token_x][self.position_token_y] != '⬛':
             return True
         else:
-            return True
+            return False
     def __token_to_move(self, input_coordinate, direction): # Select a token whit the actual position
-        self.input_coordinate = input_coordinate.upper()
+        self.input_coordinate = input_coordinate[0].upper() + input_coordinate[1]
         self.direction = direction.lower()
         # Table of coordinates
         abc, table_coordinates = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], []
