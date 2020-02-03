@@ -6,8 +6,8 @@ class Model:
             ['3','⬜', '⭕', '⬜', '⚫', '⬜', '⚫', '⬜' ,'⚫', '\n'],
             ['4','⬛', '⬜', '⬛', '⬜', '⭕', '⬜', '⬛' ,'⬜', '\n'],
             ['5','⬜', '⬛', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['6','⭕', '⬜', '⭕', '⬜', '⭕', '⬜', '⭕' ,'⬜', '\n'],
-            ['7','⬜', '⭕', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⭕', '\n'],
+            ['6','⭕', '⬜', '⬛', '⬜', '⭕', '⬜', '⭕' ,'⬜', '\n'],
+            ['7','⬜', '⭕', '⬜', '⭕', '⬜', '⬛', '⬜' ,'⭕', '\n'],
             ['8','⭕', '⬜', '⬛', '⬜', '⬛', '⬜', '⭕' ,'⬜', '\n'],
             [' ','A', 'B', 'C', 'D', 'E', 'F', 'G' ,'H', '\n']
         ]
@@ -79,7 +79,7 @@ class Model:
                         return self.eat_recursive((cordinate0 + 2), (cordinate1 - 2), 'ld')
                     if self.Table[cordinate0 + 2][cordinate1 - 2] != '⬛':
                         return self.eat_recursive((cordinate0), (cordinate1), 'rd')
-                        # test <----------------------klk-------------------------->
+                        # test <------------------------------------------------>
         if self.token == '⭕' or self.token == 'R': # make the movements of the red pieces
             if direction == 'ru':
                 if self.Table[cordinate0 - 1][cordinate1 + 1] == '⚫' or self.Table[cordinate0 - 1][cordinate1 + 1] == 'B':
