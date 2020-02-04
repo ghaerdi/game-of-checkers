@@ -5,11 +5,15 @@ class Controller:
         self.position_token_y = None
         self.direction = None
         self.token = None
+        self.error = []
+    def handle_error(self):
+        return self.error[-1]
     def get_table(self, table): # Get the table
         self.table = table
     def move_token(self):
         self.__token_to_move(input('Coordinate: '), input('Direction: '))
         if self.__valid_to_move():
+            self.error.append('')
             if self.table[self.position_token_x][self.position_token_y] == '⚫' and self.next_not_block(self.direction):
                 return self.__instructions_black_for_model(self.direction)
             if self.table[self.position_token_x][self.position_token_y] == '⭕' and self.next_not_block(self.direction):
@@ -19,14 +23,16 @@ class Controller:
             if self.table[self.position_token_x][self.position_token_y] == 'R' and self.next_not_block(self.direction):
                 return self.__instructions_red_dame_for_model(self.direction)
             else:
-                print('error: -> move token failed')
+                self.error.append('No valid move')
+        else:
+            self.error.append('Invalid token')
     def next_not_block(self, direction):
         if self.table[self.position_token_x][self.position_token_y] == '⚫' or self.table[self.position_token_x][self.position_token_y] == 'B':
             return self.__if_valid(self.table[self.position_token_x][self.position_token_y], direction)
         elif self.table[self.position_token_x][self.position_token_y] == '⭕' or self.table[self.position_token_x][self.position_token_y] == 'R':
             return self.__if_valid(self.table[self.position_token_x][self.position_token_y], direction)
         else:
-            print('error: -> no pass next not block')
+            return False
     def __if_valid(self, token, direction):
         if token == '⚫' or token == 'B':
             if direction == 'rd':
@@ -200,46 +206,50 @@ class Controller:
         return self.__instructions_black_for_model(direction)
     def __instructions_red_dame_for_model(self, direction):
         return self.__instructions_red_for_model(direction)
-
-    def can_eat(self): # Look if a token must Eat
+#                      <----------------------force eat----------------------------------->
+    def can_eat(self, token): # Look if a token must Eat
         for row_table in range(len(self.table)):
             for single_piece in range(len(self.table[row_table])):
                 try:
-                    if self.table[row_table][single_piece] == '⭕' or self.table[row_table][single_piece] == 'R':
-                        # LEFT UP
-                        if self.table[row_table - 1][single_piece - 1] == '⚫' or self.table[row_table - 1][single_piece - 1] == 'B':
-                            if self.table[row_table - 2][single_piece - 2] == '⬛':
-                                return row_table, single_piece
-                        # RIGHT UP
-                        if self.table[row_table - 1][single_piece + 1] == '⚫' or self.table[row_table - 1][single_piece + 1] == 'B':
-                            if self.table[row_table - 2][single_piece + 2] == '⬛':
-                                return row_table, single_piece
-                        # LEFT DOWN
-                    if self.table[row_table][single_piece] == 'R':
-                        if self.table[row_table + 1][single_piece - 1] == '⚫' or self.table[row_table + 1][single_piece - 1] == 'B':
-                            if self.table[row_table + 2][single_piece - 2] == '⬛':
-                                return row_table, single_piece
-                        # RIGHT DOWN
-                        if self.table[row_table + 1][single_piece + 1] == '⚫' or self.table[row_table + 1][single_piece + 1] == 'B':
-                            if self.table[row_table + 2][single_piece + 2] == '⬛':
-                                return row_table, single_piece
-                    if self.table[row_table][single_piece] == '⚫' or self.table[row_table][single_piece] == 'B':
-                        # LEFT DOWN
-                        if self.table[row_table + 1][single_piece - 1] == '⭕' or self.table[row_table + 1][single_piece - 1] == 'R':
-                            if self.table[row_table + 2][single_piece - 2] == '⬛':
-                                return row_table, single_piece
-                        # RIGHT DOWN
-                        if self.table[row_table + 1][single_piece + 1] == '⭕' or self.table[row_table + 1][single_piece + 1] == 'R':
-                            if self.table[row_table + 2][single_piece + 2] == '⬛':
-                                return row_table, single_piece
-                        # LEFT UP
-                    if self.table[row_table][single_piece] == 'B':
-                        if self.table[row_table - 1][single_piece - 1] == '⭕' or self.table[row_table - 1][single_piece - 1] == 'R':
-                            if self.table[row_table - 2][single_piece - 2] == '⬛':
-                                return row_table, single_piece
-                        # RIGTH UP
-                        if self.table[row_table - 1][single_piece + 1] == '⭕' or self.table[row_table - 1][single_piece + 1] == 'R':
-                            if self.table[row_table - 2][single_piece + 2] == '⬛':
-                                return row_table, single_piece
+                    if token == '⭕' or token == 'R':
+                        if self.table[row_table][single_piece] == '⭕' or self.table[row_table][single_piece] == 'R':
+                            # LEFT UP
+                            if self.table[row_table - 1][single_piece - 1] == '⚫' or self.table[row_table - 1][single_piece - 1] == 'B':
+                                if self.table[row_table - 2][single_piece - 2] == '⬛':
+                                    return row_table, single_piece
+                            # RIGHT UP
+                            if self.table[row_table - 1][single_piece + 1] == '⚫' or self.table[row_table - 1][single_piece + 1] == 'B':
+                                if self.table[row_table - 2][single_piece + 2] == '⬛':
+                                    return row_table, single_piece
+                    if token == 'R':
+                        if self.table[row_table][single_piece] == 'R':
+                            # LEFT DOWN
+                            if self.table[row_table + 1][single_piece - 1] == '⚫' or self.table[row_table + 1][single_piece - 1] == 'B':
+                                if self.table[row_table + 2][single_piece - 2] == '⬛':
+                                    return row_table, single_piece
+                            # RIGHT DOWN
+                            if self.table[row_table + 1][single_piece + 1] == '⚫' or self.table[row_table + 1][single_piece + 1] == 'B':
+                                if self.table[row_table + 2][single_piece + 2] == '⬛':
+                                    return row_table, single_piece
+                    if token == '⚫' or token == 'B':
+                        if self.table[row_table][single_piece] == '⚫' or self.table[row_table][single_piece] == 'B':
+                            # LEFT DOWN
+                            if self.table[row_table + 1][single_piece - 1] == '⭕' or self.table[row_table + 1][single_piece - 1] == 'R':
+                                if self.table[row_table + 2][single_piece - 2] == '⬛':
+                                    return row_table, single_piece
+                            # RIGHT DOWN
+                            if self.table[row_table + 1][single_piece + 1] == '⭕' or self.table[row_table + 1][single_piece + 1] == 'R':
+                                if self.table[row_table + 2][single_piece + 2] == '⬛':
+                                    return row_table, single_piece
+                    if token == 'B':
+                        if self.table[row_table][single_piece] == 'B':
+                            # LEFT UP
+                            if self.table[row_table - 1][single_piece - 1] == '⭕' or self.table[row_table - 1][single_piece - 1] == 'R':
+                                if self.table[row_table - 2][single_piece - 2] == '⬛':
+                                    return row_table, single_piece
+                            # RIGTH UP
+                            if self.table[row_table - 1][single_piece + 1] == '⭕' or self.table[row_table - 1][single_piece + 1] == 'R':
+                                if self.table[row_table - 2][single_piece + 2] == '⬛':
+                                    return row_table, single_piece
                 except:
                     pass
