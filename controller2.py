@@ -27,6 +27,19 @@ class Controller:
             return self.__if_valid(self.table[self.position_token_x][self.position_token_y], direction)
         else:
             print('error: -> no pass next not block')
+    def token_movement(self):
+        if token == '⚫' or token == 'B':
+            if direction == 'rd':
+                move = self.table[self.position_token_x + 1][self.position_token_y + 1]
+                if move == '⬛':
+                    return True
+                elif move == '⚫' or move == 'B':
+                    return False
+                elif move == '⭕' or move == 'R':
+                    if self.table[self.position_token_x + 2][self.position_token_y + 2] == '⬛':
+                        return True
+                else:
+                    return False
     def __if_valid(self, token, direction):
         if token == '⚫' or token == 'B':
             if direction == 'rd':
