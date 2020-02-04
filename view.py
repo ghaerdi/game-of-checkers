@@ -5,20 +5,23 @@ class View:
         self.cache = []
         self.start_view = start_view
         self.trim = 180
-    def render_view(self, view):
+    def render_view(self, view, turno):
         self.cache.append(view)
         if len(self.cache[-1]) <= self.trim:
             os.system('clear')
+            print(turno)
             print(self.cache[-1][:self.trim])
         if len(self.cache[-1]) > self.trim:
             os.system('clear')
+            print(turno)
             print(self.cache[-1][self.cache[-1].rfind('\n') - self.trim:self.cache[-1].rfind('\n')])
         self.cache[:]
     def rende_history(self):
         os.system('clear')
         print(self.cache[-1])
-    def start_render_view(self):
+    def start_render_view(self, turno):
         self.loading()
+        print(turno)
         print(self.start_view)
     def loading(self):
         for i in range(101):
