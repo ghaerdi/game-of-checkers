@@ -179,3 +179,45 @@ class Model:
                     return self.eat_recursive((cordinate0), (cordinate1), 'rd')
         else:
             return '' # for stop the recursive cicle
+    def must_eat(self): # Look if a token must Eat
+        for row_table in range(len(self.Table)):
+            for single_piece in range(len(self.Table[row_table])):
+                try:
+                    if self.Table[row_table][single_piece] == '⭕' or self.Table[row_table][single_piece] == 'R':
+                        # LEFT UP
+                        if self.Table[row_table - 1][single_piece - 1] == '⚫' or self.Table[row_table - 1][single_piece - 1] == 'B':
+                            if self.Table[row_table - 2][single_piece - 2] == '⬛':
+                                return row_table, single_piece
+                        # RIGHT UP
+                        if self.Table[row_table - 1][single_piece + 1] == '⚫' or self.Table[row_table - 1][single_piece + 1] == 'B':
+                            if self.Table[row_table - 2][single_piece + 2] == '⬛':
+                                return row_table, single_piece
+                        # LEFT DOWN
+                    if self.Table[row_table][single_piece] == 'R':
+                        if self.Table[row_table + 1][single_piece - 1] == '⚫' or self.Table[row_table + 1][single_piece - 1] == 'B':
+                            if self.Table[row_table + 2][single_piece - 2] == '⬛':
+                                return row_table, single_piece
+                        # RIGHT DOWN
+                        if self.Table[row_table + 1][single_piece + 1] == '⚫' or self.Table[row_table + 1][single_piece + 1] == 'B':
+                            if self.Table[row_table + 2][single_piece + 2] == '⬛':
+                                return row_table, single_piece
+                    if self.Table[row_table][single_piece] == '⚫' or self.Table[row_table][single_piece] == 'B':
+                        # LEFT DOWN
+                        if self.Table[row_table + 1][single_piece - 1] == '⭕' or self.Table[row_table + 1][single_piece - 1] == 'R':
+                            if self.Table[row_table + 2][single_piece - 2] == '⬛':
+                                return row_table, single_piece
+                        # RIGHT DOWN
+                        if self.Table[row_table + 1][single_piece + 1] == '⭕' or self.Table[row_table + 1][single_piece + 1] == 'R':
+                            if self.Table[row_table + 2][single_piece + 2] == '⬛':
+                                return row_table, single_piece
+                        # LEFT UP
+                    if self.Table[row_table][single_piece] == 'B':
+                        if self.Table[row_table - 1][single_piece - 1] == '⭕' or self.Table[row_table - 1][single_piece - 1] == 'R':
+                            if self.Table[row_table - 2][single_piece - 2] == '⬛':
+                                return row_table, single_piece
+                        # RIGTH UP
+                        if self.Table[row_table - 1][single_piece + 1] == '⭕' or self.Table[row_table - 1][single_piece + 1] == 'R':
+                            if self.Table[row_table - 2][single_piece + 2] == '⬛':
+                                return row_table, single_piece
+                except:
+                    pass
