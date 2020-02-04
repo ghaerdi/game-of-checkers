@@ -17,10 +17,11 @@ class View:
             print(self.cache[-1][self.cache[-1].rfind('\n') - self.trim:self.cache[-1].rfind('\n')])
         self.cache[:]
     def rende_history(self):
-        os.system('clear')
+        # os.system('clear')
         print(self.cache[-1])
     def start_render_view(self, turno):
         self.loading()
+        print(turno)
         print(self.start_view)
     def loading(self):
         for i in range(101):
