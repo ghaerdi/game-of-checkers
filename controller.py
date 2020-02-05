@@ -28,8 +28,11 @@ class Controller:
             self.error.append('Invalid token')
     def next_not_block(self, direction):
         if self.table[self.position_token_x][self.position_token_y] == '⚫' or self.table[self.position_token_x][self.position_token_y] == 'B':
+            return self.__if_valid(self.table[self.position_token_x][self.position_token_y], direction)
+        elif self.table[self.position_token_x][self.position_token_y] == '⭕' or self.table[self.position_token_x][self.position_token_y] == 'R':
+            return self.__if_valid(self.table[self.position_token_x][self.position_token_y], direction)
         else:
-            return False
+            print('error: -> no pass next not block')
     def __if_valid(self, token, direction):
         if token == '⚫' or token == 'B':
             if direction == 'rd':

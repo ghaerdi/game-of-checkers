@@ -1,5 +1,5 @@
 from controller import Controller
-from model2 import Model
+from model import Model
 from view import View
 new_controller = Controller()
 new_model = Model()
