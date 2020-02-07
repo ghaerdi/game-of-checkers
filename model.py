@@ -5,22 +5,23 @@ class Model:
             ['2','⬛', '⬜', '⬛', '⬜', '⭕', '⬜', '⬛' ,'⬜', '\n'],
             ['3','⬜', '⭕', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
             ['4','⬛', '⬜', '⬛', '⬜', '⚫', '⬜', '⭕' ,'⬜', '\n'],
-            ['5','⬜', '⭕', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
+            ['5','⬜', '⭕', '⬜', '⬛', '⬜', '⚫', '⬜' ,'⬛', '\n'],
             ['6','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⭕' ,'⬜', '\n'],
-            ['7','⬜', '⬛', '⬜', '⭕', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['8','⬛', '⬜', '⬛', '⬜', 'B', '⬜', '⬛' ,'⬜', '\n'],
+            ['7','⬜', '⚫', '⬜', '⭕', '⬜', '⬛', '⬜' ,'⬛', '\n'],
+            ['8','⭕', '⬜', '⬛', '⬜', 'B', '⬜', '⬛' ,'⬜', '\n'],
             [' ','A', 'B', 'C', 'D', 'E', 'F', 'G' ,'H', '\n']
         ]
         self.generated_table = []
         self.cache = ' '
         self.view = ''
         self.error = None
+        self.force_eat = None
     def input_instructions(self, instructions):
-        print(instructions)
         try:
             self.tokens_cache = self.Table[instructions[0]][instructions[1]]
-            if self.tokens_cache != '⬛' or self.tokens_cache != '⬜':
-            # <----------------------for recursive eat---------------------------->
+            self.force_eat = self.__can_eat(self.tokens_cache)
+            if self.force_eat[0] == instructions[0] and self.force_eat[1] == instructions[1]:
+                # <----------------------for recursive eat---------------------------->
                 if len(instructions) == 5:
                     self.eat_recursive(instructions[0], instructions[1], instructions[4])
                 else:
@@ -31,6 +32,8 @@ class Model:
                         self.Table[instructions[2]][instructions[3]] = 'B'
                     else:
                         self.Table[instructions[2]][instructions[3]] = self.tokens_cache
+            else:
+                self.error = 'force eat'
             for j in self.Table:
                 for i in j:
                     self.generated_table.append(i)
@@ -39,6 +42,8 @@ class Model:
             self.testing = instructions
         except:
             print(instructions)
+    def return_error_move(self):
+        return self.error
     def return_model_view(self):
         return self.view # return compile table for view
     def return_raw_table(self):
@@ -179,3 +184,50 @@ class Model:
                     return self.eat_recursive((cordinate0), (cordinate1), 'rd')
         else:
             return '' # for stop the recursive cicle
+    #                      <----------------------force eat----------------------------------->
+    def __can_eat(self, token): # Look if a token must Eat
+        for row_table in range(len(self.Table)):
+            for single_piece in range(len(self.Table[row_table])):
+                try:
+                    if token == '⭕' or token == 'R':
+                        if self.Table[row_table][single_piece] == '⭕' or self.Table[row_table][single_piece] == 'R':
+                            # LEFT UP
+                            if self.Table[row_table - 1][single_piece - 1] == '⚫' or self.Table[row_table - 1][single_piece - 1] == 'B':
+                                if self.Table[row_table - 2][single_piece - 2] == '⬛':
+                                    return row_table, single_piece
+                            # RIGHT UP
+                            if self.Table[row_table - 1][single_piece + 1] == '⚫' or self.Table[row_table - 1][single_piece + 1] == 'B':
+                                if self.Table[row_table - 2][single_piece + 2] == '⬛':
+                                    return row_table, single_piece
+                    if token == 'R':
+                        if self.Table[row_table][single_piece] == 'R':
+                            # LEFT DOWN
+                            if self.Table[row_table + 1][single_piece - 1] == '⚫' or self.Table[row_table + 1][single_piece - 1] == 'B':
+                                if self.Table[row_table + 2][single_piece - 2] == '⬛':
+                                    return row_table, single_piece
+                            # RIGHT DOWN
+                            if self.Table[row_table + 1][single_piece + 1] == '⚫' or self.Table[row_table + 1][single_piece + 1] == 'B':
+                                if self.Table[row_table + 2][single_piece + 2] == '⬛':
+                                    return row_table, single_piece
+                    if token == '⚫' or token == 'B':
+                        if self.Table[row_table][single_piece] == '⚫' or self.Table[row_table][single_piece] == 'B':
+                            # LEFT DOWN
+                            if self.Table[row_table + 1][single_piece - 1] == '⭕' or self.Table[row_table + 1][single_piece - 1] == 'R':
+                                if self.Table[row_table + 2][single_piece - 2] == '⬛':
+                                    return row_table, single_piece
+                            # RIGHT DOWN
+                            if self.Table[row_table + 1][single_piece + 1] == '⭕' or self.Table[row_table + 1][single_piece + 1] == 'R':
+                                if self.Table[row_table + 2][single_piece + 2] == '⬛':
+                                    return row_table, single_piece
+                    if token == 'B':
+                        if self.Table[row_table][single_piece] == 'B':
+                            # LEFT UP
+                            if self.Table[row_table - 1][single_piece - 1] == '⭕' or self.Table[row_table - 1][single_piece - 1] == 'R':
+                                if self.Table[row_table - 2][single_piece - 2] == '⬛':
+                                    return row_table, single_piece
+                            # RIGTH UP
+                            if self.Table[row_table - 1][single_piece + 1] == '⭕' or self.Table[row_table - 1][single_piece + 1] == 'R':
+                                if self.Table[row_table - 2][single_piece + 2] == '⬛':
+                                    return row_table, single_piece
+                except:
+                    pass
