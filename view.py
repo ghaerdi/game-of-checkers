@@ -5,23 +5,34 @@ class View:
         self.cache = []
         self.start_view = start_view
         self.trim = 180
+        self.view = None
     def render_view(self, view, error, move_error):
         self.cache.append(view)
         if len(self.cache[-1]) <= self.trim:
             os.system('clear')
             if error != None or error != []:
                 print(f'type error => {error or move_error}')
-            time.sleep(1)
+            time.sleep(2)
             os.system('clear')
-            print(self.cache[-1][:self.trim])
+            self.view = self.cache[-1][:self.trim]
+            print(self.view)
         if len(self.cache[-1]) > self.trim:
             os.system('clear')
             if error != None:
                 print(f'type error => {error or move_error}')
-            time.sleep(1)
+            time.sleep(2)
             os.system('clear')
-            print(self.cache[-1][self.cache[-1].rfind('\n') - self.trim:self.cache[-1].rfind('\n')])
+            self.view = self.cache[-1][self.cache[-1].rfind('\n') - self.trim:self.cache[-1].rfind('\n')]
+            print(self.view)
         self.cache[:]
+    def consult_dead_token(self):
+        stade = [0, -1]
+        for token in range(len(self.view)):
+            if self.view[token] == '⭕' or self.view[token] == 'R':
+                stade[0] += 1
+            if self.view[token] == '⚫' or self.view[token] == 'B':
+                stade[1] += 1
+        return stade
     def rende_history(self):
         os.system('clear')
         print(self.cache[-1])

@@ -3,12 +3,12 @@ class Model:
         self.Table = [  # the table for game
             ['1','⬜', '⬛', '⬜', '⚫', '⬜', '⬛', '⬜' ,'⬛', '\n'],
             ['2','⬛', '⬜', '⬛', '⬜', '⭕', '⬜', '⬛' ,'⬜', '\n'],
-            ['3','⬜', '⭕', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['4','⬛', '⬜', '⬛', '⬜', '⚫', '⬜', '⭕' ,'⬜', '\n'],
-            ['5','⬜', '⭕', '⬜', '⬛', '⬜', '⚫', '⬜' ,'⬛', '\n'],
-            ['6','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⭕' ,'⬜', '\n'],
-            ['7','⬜', '⚫', '⬜', '⭕', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['8','⭕', '⬜', '⬛', '⬜', 'B', '⬜', '⬛' ,'⬜', '\n'],
+            ['3','⬜', '⬛', '⬜', '⚫', '⬜', '⬛', '⬜' ,'⬛', '\n'],
+            ['4','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⭕' ,'⬜', '\n'],
+            ['5','⬜', '⬛', '⬜', '⬛', '⬜', '⚫', '⬜' ,'⬛', '\n'],
+            ['6','⬛', '⬜', '⚫', '⬜', '⬛', '⬜', '⭕' ,'⬜', '\n'],
+            ['7','⬜', '⭕', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
+            ['8','⬛', '⬜', '⬛', '⬜', 'B', '⬜', '⬛' ,'⬜', '\n'],
             [' ','A', 'B', 'C', 'D', 'E', 'F', 'G' ,'H', '\n']
         ]
         self.generated_table = []
@@ -16,10 +16,14 @@ class Model:
         self.view = ''
         self.error = None
         self.force_eat = None
+        self.x = None
+        self.y = None
     def input_instructions(self, instructions):
         try:
             self.tokens_cache = self.Table[instructions[0]][instructions[1]]
             self.force_eat = self.__can_eat(self.tokens_cache)
+            self.x = self.force_eat[0]
+            self.y = self.force_eat[1]
             if self.force_eat[0] == instructions[0] and self.force_eat[1] == instructions[1]:
                 # <----------------------for recursive eat---------------------------->
                 if len(instructions) == 5:
@@ -33,7 +37,7 @@ class Model:
                     else:
                         self.Table[instructions[2]][instructions[3]] = self.tokens_cache
             else:
-                self.error = 'force eat'
+                self.error = 'you need eat in => ' + self.traslate_words()
             for j in self.Table:
                 for i in j:
                     self.generated_table.append(i)
@@ -42,6 +46,8 @@ class Model:
             self.testing = instructions
         except:
             print(instructions)
+    def traslate_words(self):
+        return self.Table[8][self.y] + self.Table[self.x][0]
     def return_error_move(self):
         return self.error
     def return_model_view(self):
