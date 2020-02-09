@@ -22,22 +22,22 @@ class Model:
         try:
             self.tokens_cache = self.Table[instructions[0]][instructions[1]]
             self.force_eat = self.__can_eat(self.tokens_cache)
-            self.x = self.force_eat[0]
-            self.y = self.force_eat[1]
-            if self.force_eat[0] == instructions[0] and self.force_eat[1] == instructions[1]:
-                # <----------------------for recursive eat---------------------------->
-                if len(instructions) == 5:
-                    self.eat_recursive(instructions[0], instructions[1], instructions[4])
-                else:
-                    self.Table[instructions[0]][instructions[1]] = '⬛'
-                    if self.tokens_cache == '⭕' and instructions[2] == 0: # Add instructions convert a red token to dame
-                        self.Table[instructions[2]][instructions[3]] = 'R'
-                    elif self.tokens_cache == '⚫' and instructions[2] == 7: # Same whit black token
-                        self.Table[instructions[2]][instructions[3]] = 'B'
-                    else:
-                        self.Table[instructions[2]][instructions[3]] = self.tokens_cache
+            if self.force_eat != []:
+                for coordinate in range(len(self.force_eat)):
+                    self.x = self.force_eat[coordinate][0]
+                    self.y = self.force_eat[coordinate][1]
+                    if self.force_eat[coordinate][0] == instructions[0] and self.force_eat[coordinate][1] == instructions[1]:
+                        self.eat_recursive(instructions[0], instructions[1], instructions[4])
+                    # except:
+                    #     self.error = 'you need eat in => ' + self.traslate_words()
             else:
-                self.error = 'you need eat in => ' + self.traslate_words()
+                self.Table[instructions[0]][instructions[1]] = '⬛'
+                if self.tokens_cache == '⭕' and instructions[2] == 0: # Add instructions convert a red token to dame
+                    self.Table[instructions[2]][instructions[3]] = 'R'
+                elif self.tokens_cache == '⚫' and instructions[2] == 7: # Same whit black token
+                    self.Table[instructions[2]][instructions[3]] = 'B'
+                else:
+                    self.Table[instructions[2]][instructions[3]] = self.tokens_cache
             for j in self.Table:
                 for i in j:
                     self.generated_table.append(i)
@@ -45,7 +45,8 @@ class Model:
             self.view = self.cache.join(self.generated_table)
             self.testing = instructions
         except:
-            print(instructions)
+            pass
+        print(instructions)
     def traslate_words(self):
         return self.Table[8][self.y] + self.Table[self.x][0]
     def return_error_move(self):
@@ -211,48 +212,50 @@ class Model:
             return '' # for stop the recursive cicle
     #                      <----------------------force eat----------------------------------->
     def __can_eat(self, token): # Look if a token must Eat
-        for row_table in range(len(self.Table)):
-            for single_piece in range(len(self.Table[row_table])):
-                try:
+        tokens_can_eat = []
+        try:
+            for row_table in range(len(self.Table)):
+                for single_piece in range(len(self.Table[row_table])):
                     if token == '⭕' or token == 'R':
                         if self.Table[row_table][single_piece] == '⭕' or self.Table[row_table][single_piece] == 'R':
                             # LEFT UP
                             if self.Table[row_table - 1][single_piece - 1] == '⚫' or self.Table[row_table - 1][single_piece - 1] == 'B':
                                 if self.Table[row_table - 2][single_piece - 2] == '⬛':
-                                    return row_table, single_piece
+                                    tokens_can_eat.append([row_table, single_piece])
                             # RIGHT UP
                             if self.Table[row_table - 1][single_piece + 1] == '⚫' or self.Table[row_table - 1][single_piece + 1] == 'B':
                                 if self.Table[row_table - 2][single_piece + 2] == '⬛':
-                                    return row_table, single_piece
+                                    tokens_can_eat.append([row_table, single_piece])
                     if token == 'R':
                         if self.Table[row_table][single_piece] == 'R':
                             # LEFT DOWN
                             if self.Table[row_table + 1][single_piece - 1] == '⚫' or self.Table[row_table + 1][single_piece - 1] == 'B':
                                 if self.Table[row_table + 2][single_piece - 2] == '⬛':
-                                    return row_table, single_piece
+                                    tokens_can_eat.append([row_table, single_piece])
                             # RIGHT DOWN
                             if self.Table[row_table + 1][single_piece + 1] == '⚫' or self.Table[row_table + 1][single_piece + 1] == 'B':
                                 if self.Table[row_table + 2][single_piece + 2] == '⬛':
-                                    return row_table, single_piece
+                                    tokens_can_eat.append([row_table, single_piece])
                     if token == '⚫' or token == 'B':
                         if self.Table[row_table][single_piece] == '⚫' or self.Table[row_table][single_piece] == 'B':
                             # LEFT DOWN
                             if self.Table[row_table + 1][single_piece - 1] == '⭕' or self.Table[row_table + 1][single_piece - 1] == 'R':
                                 if self.Table[row_table + 2][single_piece - 2] == '⬛':
-                                    return row_table, single_piece
+                                    tokens_can_eat.append([row_table, single_piece])
                             # RIGHT DOWN
                             if self.Table[row_table + 1][single_piece + 1] == '⭕' or self.Table[row_table + 1][single_piece + 1] == 'R':
                                 if self.Table[row_table + 2][single_piece + 2] == '⬛':
-                                    return row_table, single_piece
+                                    tokens_can_eat.append([row_table, single_piece])
                     if token == 'B':
                         if self.Table[row_table][single_piece] == 'B':
                             # LEFT UP
                             if self.Table[row_table - 1][single_piece - 1] == '⭕' or self.Table[row_table - 1][single_piece - 1] == 'R':
                                 if self.Table[row_table - 2][single_piece - 2] == '⬛':
-                                    return row_table, single_piece
+                                    tokens_can_eat.append([row_table, single_piece])
                             # RIGTH UP
                             if self.Table[row_table - 1][single_piece + 1] == '⭕' or self.Table[row_table - 1][single_piece + 1] == 'R':
                                 if self.Table[row_table - 2][single_piece + 2] == '⬛':
-                                    return row_table, single_piece
-                except:
-                    pass
+                                    tokens_can_eat.append([row_table, single_piece])
+        except:
+            pass
+        return tokens_can_eat
