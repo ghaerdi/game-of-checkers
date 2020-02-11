@@ -10,18 +10,18 @@ class View:
         self.cache.append(view)
         if len(self.cache[-1]) <= self.trim:
             os.system('clear')
-            if error != None or error != []:
+            if error != None and error != [] or move_error != [] and move_error != None:
                 print(f'type error => {error or move_error}')
-            time.sleep(2.5)
-            os.system('clear')
+                time.sleep(2.5)
+                os.system('clear')
             self.view = self.cache[-1][:self.trim]
             print(self.view)
         if len(self.cache[-1]) > self.trim:
             os.system('clear')
-            if error != None:
+            if error != None and error != [] or move_error != [] and move_error != None:
                 print(f'type error => {error or move_error}')
-            time.sleep(2.5)
-            os.system('clear')
+                time.sleep(2.5)
+                os.system('clear')
             self.view = self.cache[-1][self.cache[-1].rfind('\n') - self.trim:self.cache[-1].rfind('\n')]
             print(self.view)
         self.cache[:]
@@ -36,9 +36,12 @@ class View:
     def rende_history(self):
         os.system('clear')
         print(self.cache[-1])
-    def start_render_view(self, turno):
+    def start_render_view(self, turn):
         self.loading()
-        print(turno)
+        if turn == 0:
+            print('Red Token')
+        elif turn == 1:
+            print('Black Token')
         print(self.start_view)
     def loading(self):
         for i in range(101):

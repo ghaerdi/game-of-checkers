@@ -1,19 +1,14 @@
 class Controller:
     def __init__(self):
-        self.table = None
         self.position_token_x = None
         self.position_token_y = None
         self.direction = None
-        self.token = None
-        self.error = []
-    def handle_error(self):
-        return self.error[-1]
     def get_table(self, table): # Get the table
         self.table = table
     def move_token(self):
         self.__token_to_move(input('Coordinate: '), input('Direction: '))
         if self.__valid_to_move():
-            self.error.append('')
+            self.error = None
             if self.table[self.position_token_x][self.position_token_y] == '⚫' and self.next_not_block(self.direction):
                 return self.__instructions_black_for_model(self.direction)
             if self.table[self.position_token_x][self.position_token_y] == '⭕' and self.next_not_block(self.direction):
@@ -23,16 +18,18 @@ class Controller:
             if self.table[self.position_token_x][self.position_token_y] == 'R' and self.next_not_block(self.direction):
                 return self.__instructions_red_dame_for_model(self.direction)
             else:
-                self.error.append('No valid move')
+                self.error = 'No valid move'
         else:
-            self.error.append('Invalid token')
+            self.error = 'Invalid token'
+    def handle_error(self):
+        return self.error
     def next_not_block(self, direction):
         if self.table[self.position_token_x][self.position_token_y] == '⚫' or self.table[self.position_token_x][self.position_token_y] == 'B':
             return self.__if_valid(self.table[self.position_token_x][self.position_token_y], direction)
         elif self.table[self.position_token_x][self.position_token_y] == '⭕' or self.table[self.position_token_x][self.position_token_y] == 'R':
             return self.__if_valid(self.table[self.position_token_x][self.position_token_y], direction)
         else:
-            print('error: -> no pass next not block')
+            return False
     def __if_valid(self, token, direction):
         if token == '⚫' or token == 'B':
             if direction == 'rd':

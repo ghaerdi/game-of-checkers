@@ -1,44 +1,51 @@
+import random
 class Model:
     def __init__(self):
         self.Table = [  # the table for game
             ['1','⬜', '⬛', '⬜', '⚫', '⬜', '⬛', '⬜' ,'⬛', '\n'],
             ['2','⬛', '⬜', '⬛', '⬜', '⭕', '⬜', '⬛' ,'⬜', '\n'],
             ['3','⬜', '⬛', '⬜', '⚫', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['4','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⭕' ,'⬜', '\n'],
+            ['4','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⬛' ,'⬜', '\n'],
             ['5','⬜', '⬛', '⬜', '⬛', '⬜', '⚫', '⬜' ,'⬛', '\n'],
-            ['6','⬛', '⬜', '⚫', '⬜', '⬛', '⬜', '⭕' ,'⬜', '\n'],
-            ['7','⬜', '⭕', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['8','⬛', '⬜', '⬛', '⬜', 'B', '⬜', '⬛' ,'⬜', '\n'],
+            ['6','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⬛' ,'⬜', '\n'],
+            ['7','⬜', '⚫', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
+            ['8','⭕', '⬜', '⬛', '⬜', 'B', '⬜', '⬛' ,'⬜', '\n'],
             [' ','A', 'B', 'C', 'D', 'E', 'F', 'G' ,'H', '\n']
         ]
         self.generated_table = []
         self.cache = ' '
         self.view = ''
-        # self.error = None
         self.force_eat = None
+        self.error = None
+        self.turn = random.randint(0, 1)
     def input_instructions(self, instructions):
         try:
             self.tokens_cache = self.Table[instructions[0]][instructions[1]]
-            self.force_eat = self.__can_eat(self.tokens_cache)
-            if self.force_eat != []:
-                for coordinate in self.force_eat:
-                    self.error = None
-                    try:
+            if (self.turn == 0 and self.tokens_cache == '⭕') or (self.turn == 0 and self.tokens_cache == 'R') or (self.turn == 1 and self.tokens_cache == '⚫') or (self.turn == 1 and self.tokens_cache == 'B'):
+                self.error = None
+                self.force_eat = self.__can_eat(self.tokens_cache)
+                if self.force_eat != []:
+                    for coordinate in self.force_eat:
+                        self.error = None
                         if coordinate[0] == instructions[0] and coordinate[1] == instructions[1]:
                             self.eat_recursive(instructions[0], instructions[1], instructions[4])
                             break
                         else:
-                            HAHAHAHAHA
-                    except:
-                        self.error = 'you need eat in => ' + str((self.traslate_words()))[1:-1]
-            else:
-                self.Table[instructions[0]][instructions[1]] = '⬛'
-                if self.tokens_cache == '⭕' and instructions[2] == 0:
-                    self.Table[instructions[2]][instructions[3]] = 'R'
-                elif self.tokens_cache == '⚫' and instructions[2] == 7:
-                    self.Table[instructions[2]][instructions[3]] = 'B'
+                            self.error = 'you need eat in => ' + str((self.traslate_words()))[1:-1]
                 else:
-                    self.Table[instructions[2]][instructions[3]] = self.tokens_cache
+                    self.Table[instructions[0]][instructions[1]] = '⬛'
+                    if self.tokens_cache == '⭕' and instructions[2] == 0:
+                        self.Table[instructions[2]][instructions[3]] = 'R'
+                    elif self.tokens_cache == '⚫' and instructions[2] == 7:
+                        self.Table[instructions[2]][instructions[3]] = 'B'
+                    else:
+                        self.Table[instructions[2]][instructions[3]] = self.tokens_cache
+                if self.tokens_cache == '⭕' or self.token == 'R':
+                    self.turn = 1
+                else:
+                    self.turn = 0
+            else:
+                self.error = 'is not your turn'
             for j in self.Table:
                 for i in j:
                     self.generated_table.append(i)
@@ -47,7 +54,6 @@ class Model:
             self.testing = instructions
         except:
             pass
-        print(instructions)
     def traslate_words(self):
         translate = []
         for translate0 in self.force_eat:
@@ -59,6 +65,8 @@ class Model:
         return self.view # return compile table for view
     def return_raw_table(self):
         return self.Table # return raw table for controller
+    def return_turn(self):
+        return self.turn
     def return_render_view(self):# compiler
         for j in self.Table:
             for i in j:
