@@ -14,27 +14,28 @@ class Model:
         self.generated_table = []
         self.cache = ' '
         self.view = ''
-        self.error = None
+        # self.error = None
         self.force_eat = None
-        self.x = None
-        self.y = None
     def input_instructions(self, instructions):
         try:
             self.tokens_cache = self.Table[instructions[0]][instructions[1]]
             self.force_eat = self.__can_eat(self.tokens_cache)
             if self.force_eat != []:
-                for coordinate in range(len(self.force_eat)):
-                    self.x = self.force_eat[coordinate][0]
-                    self.y = self.force_eat[coordinate][1]
-                    if self.force_eat[coordinate][0] == instructions[0] and self.force_eat[coordinate][1] == instructions[1]:
-                        self.eat_recursive(instructions[0], instructions[1], instructions[4])
-                    # except:
-                    #     self.error = 'you need eat in => ' + self.traslate_words()
+                for coordinate in self.force_eat:
+                    self.error = None
+                    try:
+                        if coordinate[0] == instructions[0] and coordinate[1] == instructions[1]:
+                            self.eat_recursive(instructions[0], instructions[1], instructions[4])
+                            break
+                        else:
+                            HAHAHAHAHA
+                    except:
+                        self.error = 'you need eat in => ' + str((self.traslate_words()))[1:-1]
             else:
                 self.Table[instructions[0]][instructions[1]] = '⬛'
-                if self.tokens_cache == '⭕' and instructions[2] == 0: # Add instructions convert a red token to dame
+                if self.tokens_cache == '⭕' and instructions[2] == 0:
                     self.Table[instructions[2]][instructions[3]] = 'R'
-                elif self.tokens_cache == '⚫' and instructions[2] == 7: # Same whit black token
+                elif self.tokens_cache == '⚫' and instructions[2] == 7:
                     self.Table[instructions[2]][instructions[3]] = 'B'
                 else:
                     self.Table[instructions[2]][instructions[3]] = self.tokens_cache
@@ -48,7 +49,10 @@ class Model:
             pass
         print(instructions)
     def traslate_words(self):
-        return self.Table[8][self.y] + self.Table[self.x][0]
+        translate = []
+        for translate0 in self.force_eat:
+            translate.append(self.Table[8][translate0[1]] + self.Table[translate0[0]][0])
+        return translate
     def return_error_move(self):
         return self.error
     def return_model_view(self):

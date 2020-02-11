@@ -12,7 +12,7 @@ class View:
             os.system('clear')
             if error != None or error != []:
                 print(f'type error => {error or move_error}')
-            time.sleep(2)
+            time.sleep(2.5)
             os.system('clear')
             self.view = self.cache[-1][:self.trim]
             print(self.view)
@@ -20,7 +20,7 @@ class View:
             os.system('clear')
             if error != None:
                 print(f'type error => {error or move_error}')
-            time.sleep(2)
+            time.sleep(2.5)
             os.system('clear')
             self.view = self.cache[-1][self.cache[-1].rfind('\n') - self.trim:self.cache[-1].rfind('\n')]
             print(self.view)
@@ -42,11 +42,11 @@ class View:
         print(self.start_view)
     def loading(self):
         for i in range(101):
-            time.sleep(0.03)
+            time.sleep(0.015)
             os.system('clear')
             print('                                                     loading')
             print('[{}] {}'.format(('◾' * i), (str(i) + ' %')))
-        time.sleep(0.8)
+        time.sleep(0.2)
         os.system('clear')
         print('                                 ===========================================================')
         print('                                 ॥                                                         ॥')
@@ -56,7 +56,7 @@ class View:
         print('                                 ॥                                                         ॥')
         print('                                 ॥                                                         ॥')
         print('                                 ===========================================================')
-        time.sleep(1)
+        time.sleep(2)
         os.system('clear')
         tutorial = input('skip tutorial? [yes / no] ')
         if tutorial.lower() == 'n' or tutorial.lower() == 'no':
