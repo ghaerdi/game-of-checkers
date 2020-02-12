@@ -133,9 +133,9 @@ class Controller:
         self.direction = direction.lower()
         # Table of coordinates
         abc, table_coordinates = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], []
-        for i in range(1, 9):
-            for l in abc:
-                table_coordinates.append(l + str(i))
+        for numbers in range(1, 9):
+            for letters in abc:
+                table_coordinates.append(letters + str(numbers))
         # Checking input and coordinates
         coordinate_x = 0
         coordinate_y = 1

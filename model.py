@@ -2,13 +2,13 @@ import random
 class Model:
     def __init__(self):
         self.Table = [  # the table for game
-            ['1','⬜', '⬛', '⬜', '⚫', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['2','⬛', '⬜', '⬛', '⬜', '⭕', '⬜', '⬛' ,'⬜', '\n'],
+            ['1','⬜', '⬛', '⬜', '⬛', '⬜', 'B', '⬜' ,'⬛', '\n'],
+            ['2','⬛', '⬜', '⬛', '⬜', '⭕', '⬜', 'R' ,'⬜', '\n'],
             ['3','⬜', '⬛', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['4','⬛', '⬜', '⬛', '⬜', '⭕', '⬜', '⬛' ,'⬜', '\n'],
+            ['4','⬛', '⬜', 'R', '⬜', '⬛', '⬜', '⭕' ,'⬜', '\n'],
             ['5','⬜', '⬛', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['6','⬛', '⬜', '⬛', '⬜', '⭕', '⬜', '⬛' ,'⬜', '\n'],
-            ['7','⬜', '⬛', '⬜', '⬛', '⬜', 'B', '⬜' ,'⬛', '\n'],
+            ['6','⬛', '⬜', '⭕', '⬜', 'R', '⬜', '⬛' ,'⬜', '\n'],
+            ['7','⬜', '⬛', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
             ['8','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⬛' ,'⬜', '\n'],
             [' ','A', 'B', 'C', 'D', 'E', 'F', 'G' ,'H', '\n']
         ]
@@ -21,7 +21,10 @@ class Model:
     def input_instructions(self, instructions):
         try:
             self.tokens_cache = self.Table[instructions[0]][instructions[1]]
-            if (self.turn == 0 and self.tokens_cache == '⭕') or (self.turn == 0 and self.tokens_cache == 'R') or (self.turn == 1 and self.tokens_cache == '⚫') or (self.turn == 1 and self.tokens_cache == 'B'):
+            if ((self.turn == 0 and self.tokens_cache == '⭕') or 
+                (self.turn == 0 and self.tokens_cache == 'R') or 
+                (self.turn == 1 and self.tokens_cache == '⚫') or 
+                (self.turn == 1 and self.tokens_cache == 'B')):
                 self.error = None
                 self.force_eat = self.__can_eat(self.tokens_cache)
                 if self.force_eat != []:
@@ -40,10 +43,11 @@ class Model:
                         self.Table[instructions[2]][instructions[3]] = 'B'
                     else:
                         self.Table[instructions[2]][instructions[3]] = self.tokens_cache
-                if self.tokens_cache == '⭕' or self.tokens_cache == 'R':
-                    self.turn = 1
-                else:
-                    self.turn = 0
+                if self.error == None:
+                    if self.tokens_cache == '⭕' or self.tokens_cache == 'R':
+                        self.turn = 1
+                    else:
+                        self.turn = 0
             else:
                 self.error = 'is not your turn'
             for j in self.Table:
@@ -111,14 +115,14 @@ class Model:
                             self.Table[cordinate0 + 2][cordinate1 - 2] = self.token
                         return self.eat_recursive((cordinate0 + 2), (cordinate1 - 2), 'ld')
                     if self.Table[cordinate0 + 2][cordinate1 - 2] != '⬛':
-                        if self.Table[cordinate0 + 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 + 1] == '⭕':
+                        if self.Table[cordinate0 + 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 + 1] == 'R':
                             return self.eat_recursive((cordinate0), (cordinate1), 'rd')
                         return ''
                 else:
                     if self.token == 'B':
-                        if self.Table[cordinate0 - 1][cordinate1 - 1] == '⭕' or self.Table[cordinate0 - 1][cordinate1 - 1] == '⭕':
+                        if self.Table[cordinate0 - 1][cordinate1 - 1] == '⭕' or self.Table[cordinate0 - 1][cordinate1 - 1] == 'R':
                             return self.eat_recursive((cordinate0), (cordinate1), 'lu')
-                    if self.Table[cordinate0 + 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 + 1] == '⭕':
+                    if self.Table[cordinate0 + 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 + 1] == 'R':
                         return self.eat_recursive((cordinate0), (cordinate1), 'rd')
                     return ''
         if self.token == '⭕' or self.token == 'R': # make the movements of the red pieces
@@ -177,9 +181,9 @@ class Model:
                     if self.Table[cordinate0 - 2][cordinate1 + 2] != '⬛':
                         return self.eat_recursive((cordinate0), (cordinate1), 'lu')
                 else:
-                    if self.Table[cordinate0 + 1][cordinate1 + 1] == '⭕':
+                    if self.Table[cordinate0 + 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 + 1] == 'R':
                         return self.eat_recursive((cordinate0), (cordinate1), 'rd')
-                    if self.Table[cordinate0 - 1][cordinate1 - 1] == '⭕':
+                    if self.Table[cordinate0 - 1][cordinate1 - 1] == '⭕' or self.Table[cordinate0 - 1][cordinate1 - 1] == 'R':
                         return self.eat_recursive((cordinate0), (cordinate1), 'lu')
                     return ''
             if direction == 'lu':
