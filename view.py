@@ -32,7 +32,10 @@ class View:
                 stade[0] += 1
             if self.view[token] == '⚫' or self.view[token] == 'B':
                 stade[1] += 1
-        return stade
+        if stade[0] == 0:
+            return 'black'
+        if stade[1] == 0:
+            return 'red'
     def rende_history(self):
         os.system('clear')
         print(self.cache[-1])
