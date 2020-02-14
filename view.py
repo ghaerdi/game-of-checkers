@@ -41,11 +41,14 @@ class View:
         print(self.cache[-1])
     def start_render_view(self, turn):
         self.loading()
-        if turn == 0:
-            print('Red Token')
-        elif turn == 1:
-            print('Black Token')
         print(self.start_view)
+    def print_turn(self, turn):
+        if turn == 0:
+            print('Turn for ⭕  or R token')
+            print('\n')
+        elif turn == 1:
+            print('Turn for ⚫ or B token')
+            print('\n')
     def loading(self):
         for i in range(101):
             time.sleep(0.015)
@@ -64,18 +67,14 @@ class View:
         print('                                 ===========================================================')
         time.sleep(2)
         os.system('clear')
-        tutorial = input('skip tutorial? [yes / no] ')
-        if tutorial.lower() == 'n' or tutorial.lower() == 'no':
-            os.system('clear')
-            print('                                 ====================================================================')
-            print('                                 ॥                           How to play 🎮                          ॥')
-            print('                                 ॥ ⚫ select a coordinate for example A2 and then assign an address  ॥')
-            print('                                 ॥                                                                  ॥')
-            print('                                 ॥ ✅ the Black pieces have "rd" (right down) and "ld" (left down)   ॥')
-            print('                                 ॥ ✅ the Red pieces have "ru" (right up) and "lu" (left up)         ॥')
-            print('                                 ॥ ✅ the Dames have all directions  ( ru, lu, rd, ld )              ॥')
-            print('                                 ॥                                                                  ॥')
-            print('                                 ====================================================================')
-            time.sleep(10)
-            os.system('clear')
+        print('                                 ====================================================================')
+        print('                                 ॥                           How to play 🎮                          ॥')
+        print('                                 ॥ ⚫ select a coordinate for example A2 and then assign an address  ॥')
+        print('                                 ॥                                                                  ॥')
+        print('                                 ॥ ✅ the Black pieces have "rd" (right down) and "ld" (left down)   ॥')
+        print('                                 ॥ ✅ the Red pieces have "ru" (right up) and "lu" (left up)         ॥')
+        print('                                 ॥ ✅ the Dames have all directions  ( ru, lu, rd, ld )              ॥')
+        print('                                 ॥                                                                  ॥')
+        print('                                 ====================================================================')
+        time.sleep(7)
         os.system('clear')

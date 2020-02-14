@@ -12,6 +12,7 @@ class Game():
         new_view = View(new_model.return_render_view())
         new_view.start_render_view(new_model.return_turn())
         while True:
+            new_view.print_turn(new_model.return_turn())
             new_controller.get_table(new_model.return_raw_table())
             new_model.input_instructions(new_controller.move_token())
             new_view.render_view(new_model.return_model_view(), new_controller.handle_error(), new_model.return_error_move())
