@@ -1,19 +1,14 @@
 class Controller:
     def __init__(self):
-        self.table = None
         self.position_token_x = None
         self.position_token_y = None
         self.direction = None
-        self.token = None
-        self.error = []
-    def handle_error(self):
-        return self.error[-1]
     def get_table(self, table): # Get the table
         self.table = table
     def move_token(self):
         self.__token_to_move(input('Coordinate: '), input('Direction: '))
         if self.__valid_to_move():
-            self.error.append('')
+            self.error = None
             if self.table[self.position_token_x][self.position_token_y] == '⚫' and self.next_not_block(self.direction):
                 return self.__instructions_black_for_model(self.direction)
             if self.table[self.position_token_x][self.position_token_y] == '⭕' and self.next_not_block(self.direction):
@@ -23,16 +18,18 @@ class Controller:
             if self.table[self.position_token_x][self.position_token_y] == 'R' and self.next_not_block(self.direction):
                 return self.__instructions_red_dame_for_model(self.direction)
             else:
-                self.error.append('No valid move')
+                self.error = 'the move you are trying to make is not valid'
         else:
-            self.error.append('Invalid token')
+            self.error = 'the piece you are trying to move is not valid'
+    def handle_error(self):
+        return self.error
     def next_not_block(self, direction):
         if self.table[self.position_token_x][self.position_token_y] == '⚫' or self.table[self.position_token_x][self.position_token_y] == 'B':
             return self.__if_valid(self.table[self.position_token_x][self.position_token_y], direction)
         elif self.table[self.position_token_x][self.position_token_y] == '⭕' or self.table[self.position_token_x][self.position_token_y] == 'R':
             return self.__if_valid(self.table[self.position_token_x][self.position_token_y], direction)
         else:
-            print('error: -> no pass next not block')
+            return False
     def __if_valid(self, token, direction):
         if token == '⚫' or token == 'B':
             if direction == 'rd':
@@ -127,31 +124,38 @@ class Controller:
                 else:
                     return False
     def __valid_to_move(self):
-        if self.table[self.position_token_x][self.position_token_y] != '⬜' and self.table[self.position_token_x][self.position_token_y] != '⬛':
-            return True
-        else:
-            return False
-    def __token_to_move(self, input_coordinate, direction): # Select a token whit the actual position
-        self.input_coordinate = input_coordinate[0].upper() + input_coordinate[1]
-        self.direction = direction.lower()
-        # Table of coordinates
-        abc, table_coordinates = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], []
-        for i in range(1, 9):
-            for l in abc:
-                table_coordinates.append(l + str(i))
-        # Checking input and coordinates
-        coordinate_x = 0
-        coordinate_y = 1
-        for all_coordinates in table_coordinates:
-            if input_coordinate == all_coordinates:
-                self.position_token_x = coordinate_x
-                self.position_token_y = coordinate_y
+        try:
+            if self.table[self.position_token_x][self.position_token_y] != '⬜' and self.table[self.position_token_x][self.position_token_y] != '⬛':
+                return True
             else:
-                if coordinate_y < 8:
-                    coordinate_y = coordinate_y + 1
+                return False
+        except:
+            return False
+    def __token_to_move(self, input_coordinate, direction):
+        try:
+            test = int(input_coordinate[1])
+            input_coordinate = input_coordinate[0].upper() + input_coordinate[1]
+            self.direction = direction.lower()
+            # Table of coordinates
+            abc, table_coordinates = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], []
+            for numbers in range(1, 9):
+                for letters in abc:
+                    table_coordinates.append(letters + str(numbers))
+            # Checking input and coordinates
+            coordinate_x = 0
+            coordinate_y = 1
+            for all_coordinates in table_coordinates:
+                if input_coordinate == all_coordinates:
+                    self.position_token_x = coordinate_x
+                    self.position_token_y = coordinate_y
                 else:
-                    coordinate_y = 1
-                    coordinate_x = coordinate_x + 1
+                    if coordinate_y < 8:
+                        coordinate_y = coordinate_y + 1
+                    else:
+                        coordinate_y = 1
+                        coordinate_x = coordinate_x + 1
+        except:
+            pass
     def __instructions_black_for_model(self, direction):
         if direction == 'ld':
             if self.table[self.position_token_x + 1][self.position_token_y - 1] == '⭕' or self.table[self.position_token_x + 1][self.position_token_y - 1] == 'R':

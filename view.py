@@ -10,18 +10,18 @@ class View:
         self.cache.append(view)
         if len(self.cache[-1]) <= self.trim:
             os.system('clear')
-            if error != None or error != []:
+            if error != None and error != [] or move_error != [] and move_error != None:
                 print(f'type error => {error or move_error}')
-            time.sleep(2)
-            os.system('clear')
+                time.sleep(2.5)
+                os.system('clear')
             self.view = self.cache[-1][:self.trim]
             print(self.view)
         if len(self.cache[-1]) > self.trim:
             os.system('clear')
-            if error != None:
+            if error != None and error != [] or move_error != [] and move_error != None:
                 print(f'type error => {error or move_error}')
-            time.sleep(2)
-            os.system('clear')
+                time.sleep(2.5)
+                os.system('clear')
             self.view = self.cache[-1][self.cache[-1].rfind('\n') - self.trim:self.cache[-1].rfind('\n')]
             print(self.view)
         self.cache[:]
@@ -32,21 +32,30 @@ class View:
                 stade[0] += 1
             if self.view[token] == '⚫' or self.view[token] == 'B':
                 stade[1] += 1
-        return stade
+        if stade[0] == 0:
+            return 'black'
+        if stade[1] == 0:
+            return 'red'
     def rende_history(self):
         os.system('clear')
         print(self.cache[-1])
-    def start_render_view(self, turno):
+    def start_render_view(self, turn):
         self.loading()
-        print(turno)
         print(self.start_view)
+    def print_turn(self, turn):
+        if turn == 0:
+            print('Turn for ⭕  or R token')
+            print('\n')
+        elif turn == 1:
+            print('Turn for ⚫ or B token')
+            print('\n')
     def loading(self):
         for i in range(101):
-            time.sleep(0.03)
+            time.sleep(0.015)
             os.system('clear')
             print('                                                     loading')
             print('[{}] {}'.format(('◾' * i), (str(i) + ' %')))
-        time.sleep(0.8)
+        time.sleep(0.2)
         os.system('clear')
         print('                                 ===========================================================')
         print('                                 ॥                                                         ॥')
@@ -56,20 +65,16 @@ class View:
         print('                                 ॥                                                         ॥')
         print('                                 ॥                                                         ॥')
         print('                                 ===========================================================')
-        time.sleep(1)
+        time.sleep(2)
         os.system('clear')
-        tutorial = input('skip tutorial? [yes / no] ')
-        if tutorial.lower() == 'n' or tutorial.lower() == 'no':
-            os.system('clear')
-            print('                                 ====================================================================')
-            print('                                 ॥                           How to play 🎮                          ॥')
-            print('                                 ॥ ⚫ select a coordinate for example A2 and then assign an address  ॥')
-            print('                                 ॥                                                                  ॥')
-            print('                                 ॥ ✅ the Black pieces have "rd" (right down) and "ld" (left down)   ॥')
-            print('                                 ॥ ✅ the Red pieces have "ru" (right up) and "lu" (left up)         ॥')
-            print('                                 ॥ ✅ the Dames have all directions  ( ru, lu, rd, ld )              ॥')
-            print('                                 ॥                                                                  ॥')
-            print('                                 ====================================================================')
-            time.sleep(10)
-            os.system('clear')
+        print('                                 ====================================================================')
+        print('                                 ॥                           How to play 🎮                          ॥')
+        print('                                 ॥ ⚫ select a coordinate for example A2 and then assign an address  ॥')
+        print('                                 ॥                                                                  ॥')
+        print('                                 ॥ ✅ the Black pieces have "rd" (right down) and "ld" (left down)   ॥')
+        print('                                 ॥ ✅ the Red pieces have "ru" (right up) and "lu" (left up)         ॥')
+        print('                                 ॥ ✅ the Dames have all directions  ( ru, lu, rd, ld )              ॥')
+        print('                                 ॥                                                                  ॥')
+        print('                                 ====================================================================')
+        time.sleep(7)
         os.system('clear')
