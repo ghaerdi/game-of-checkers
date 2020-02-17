@@ -60,7 +60,7 @@ class View:
         print('                                 ===========================================================')
         print('                                 ॥                                                         ॥')
         print('                                 ॥                                                         ॥')
-        print('                                 ॥                     Chinese checkers                    ॥')
+        print('                                 ॥                        checkers                         ॥')
         print('                                 ॥                         中国女士                        ॥')
         print('                                 ॥                                                         ॥')
         print('                                 ॥                                                         ॥')
