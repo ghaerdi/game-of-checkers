@@ -1,8 +1,8 @@
-# 🎯 Chinese checkers
+# 🎯 Checkers
 
 ##### Made by [Erick sosa](https://github.com/ericksosagarcia) and [Gil Santana](https://github.com/ghaerdi)
 
-![Chinese checkers](https://i.ibb.co/dgb4M68/Captura-de-pantalla-de-2020-02-02-17-47-59.png)
+![Checkers](https://i.ibb.co/dgb4M68/Captura-de-pantalla-de-2020-02-02-17-47-59.png)
 
 ## 🐧 run in linux or unix
 ## ⚠ if you want run this game in windows you need git bash and python 3.6.x
