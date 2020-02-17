@@ -9,13 +9,13 @@ class Controller:
         self.__token_to_move(input('Coordinate: '), input('Direction: '))
         if self.__valid_to_move():
             self.error = None
-            if self.table[self.position_token_x][self.position_token_y] == '⚫' and self.next_not_block(self.direction):
+            if self.table[self.position_token_x][self.position_token_y] == '⚫' and self.__next_not_block(self.direction):
                 return self.__instructions_black_for_model(self.direction)
-            if self.table[self.position_token_x][self.position_token_y] == '⭕' and self.next_not_block(self.direction):
+            if self.table[self.position_token_x][self.position_token_y] == '⭕' and self.__next_not_block(self.direction):
                 return self.__instructions_red_for_model(self.direction)
-            if self.table[self.position_token_x][self.position_token_y] == 'B' and self.next_not_block(self.direction):
+            if self.table[self.position_token_x][self.position_token_y] == 'B' and self.__next_not_block(self.direction):
                 return self.__instructions_black_dame_for_model(self.direction)
-            if self.table[self.position_token_x][self.position_token_y] == 'R' and self.next_not_block(self.direction):
+            if self.table[self.position_token_x][self.position_token_y] == 'R' and self.__next_not_block(self.direction):
                 return self.__instructions_red_dame_for_model(self.direction)
             else:
                 self.error = 'the move you are trying to make is not valid'
@@ -23,7 +23,7 @@ class Controller:
             self.error = 'the piece you are trying to move is not valid'
     def handle_error(self):
         return self.error
-    def next_not_block(self, direction):
+    def __next_not_block(self, direction):
         if self.table[self.position_token_x][self.position_token_y] == '⚫' or self.table[self.position_token_x][self.position_token_y] == 'B':
             return self.__if_valid(self.table[self.position_token_x][self.position_token_y], direction)
         elif self.table[self.position_token_x][self.position_token_y] == '⭕' or self.table[self.position_token_x][self.position_token_y] == 'R':

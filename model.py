@@ -2,14 +2,14 @@ import random
 class Model:
     def __init__(self):
         self.Table = [  # the table for game
-            ['1','⬜', '⚫', '⬜', '⚫', '⬜', '⚫', '⬜' ,'B', '\n'],
-            ['2','B', '⬜', '⚫', '⬜', 'B', '⬜', '⚫' ,'⬜', '\n'],
-            ['3','⬜', '⚫', '⬜', 'B', '⬜', '⚫', '⬜' ,'B', '\n'],
+            ['1','⬜', '⚫', '⬜', '⚫', '⬜', '⚫', '⬜' ,'⚫', '\n'],
+            ['2','⚫', '⬜', '⚫', '⬜', '⚫', '⬜', '⚫' ,'⬜', '\n'],
+            ['3','⬜', '⚫', '⬜', '⚫', '⬜', '⚫', '⬜' ,'⚫', '\n'],
             ['4','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⬛' ,'⬜', '\n'],
             ['5','⬜', '⬛', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['6','R', '⬜', 'R', '⬜', 'R', '⬜', '⭕' ,'⬜', '\n'],
+            ['6','⭕', '⬜', '⭕', '⬜', '⭕', '⬜', '⭕' ,'⬜', '\n'],
             ['7','⬜', '⭕', '⬜', '⭕', '⬜', '⭕', '⬜' ,'⭕', '\n'],
-            ['8','⭕', '⬜', 'R', '⬜', '⭕', '⬜', 'R' ,'⬜', '\n'],
+            ['8','⭕', '⬜', '⭕', '⬜', '⭕', '⬜', '⭕' ,'⬜', '\n'],
             [' ','A', 'B', 'C', 'D', 'E', 'F', 'G' ,'H', '\n']
         ]
         self.generated_table = []
@@ -34,7 +34,7 @@ class Model:
                             self.eat_recursive(instructions[0], instructions[1], instructions[4])
                             break
                         else:
-                            self.error = 'you need eat in => ' + str((self.traslate_words()))[1:-1]
+                            self.error = 'you need eat in => ' + str((self.__traslate_words()))[1:-1]
                 else:
                     self.Table[instructions[0]][instructions[1]] = '⬛'
                     if self.tokens_cache == '⭕' and instructions[2] == 0:
@@ -58,7 +58,7 @@ class Model:
             self.testing = instructions
         except:
             self.error = 'try on other direction'
-    def traslate_words(self):
+    def __traslate_words(self):
         translate = []
         for translate0 in self.force_eat:
             translate.append(self.Table[8][translate0[1]] + self.Table[translate0[0]][0])
