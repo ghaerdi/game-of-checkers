@@ -9,11 +9,11 @@
 
 ## How to play 🎮
  ⚫ **Select a coordinate for example A2 and then assign an address**
- 
+
  ✅ **The Black pieces have "rd" (right down) and "ld" (left down)**
- 
+
  ✅ **The Red pieces have "ru" (right up) and "lu" (left up)**
- 
+
  ✅ **The Dames have all directions  ( ru, lu, rd, ld )**
 
 ### How to run and requirements
