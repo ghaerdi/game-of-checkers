@@ -2,15 +2,15 @@ import random
 class Model:
     def __init__(self):
         self.Table = [  # the table for game
-            ['1','⬜', '⚫', '⬜', '⚫', '⬜', '⚫', '⬜' , '⚫', '\n'],
-            ['2','⚫', '⬜', '⚫', '⬜', '⚫', '⬜', '⚫' , '⬜', '\n'],
-            ['3','⬜', '⚫', '⬜', '⚫', '⬜', '⚫', '⬜' , '⚫', '\n'],
-            ['4','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⬛' ,'⬜', '\n'],
-            ['5','⬜', '⬛', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
-            ['6','⭕', '⬜', '⭕', '⬜', '⭕', '⬜', '⭕' ,'⬜', '\n'],
-            ['7','⬜', '⭕', '⬜', '⭕', '⬜', '⭕', '⬜' ,'⭕', '\n'],
-            ['8','⭕', '⬜', '⭕', '⬜', '⭕', '⬜', '⭕' ,'⬜', '\n'],
-            [' ','A', 'B', 'C', 'D', 'E', 'F', 'G' ,'H', '\n']
+            ['1','⬜', '⬛', '⬜', '⬛', '⬜', '⬛', '⬜' , 'R', '\n'],
+            ['2','⚫', '⬜', '⬛', '⬜', '⬛', '⬜', '⚫' , '⬜', '\n'],
+            ['3','⬜', '⬛', '⬜', '⬛', '⬜', '⬛', '⬜' , 'R', '\n'],
+            ['4','⬛', '⬜', '⬛', '⬜', 'R', '⬜', '⬛' ,'⬜', '\n'],
+            ['5','⬜', '⬛', '⬜', '⚫', '⬜', '⬛', '⬜' ,'⬛', '\n'],
+            ['6','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⬛' ,'⬜', '\n'],
+            ['7','⬜', '⚫', '⬜', '⬛', '⬜', '⬛', '⬜' ,'⬛', '\n'],
+            ['8','⬛', '⬜', '⬛', '⬜', '⬛', '⬜', '⬛' ,'⬜', '\n'],
+            [' ','a', 'b', 'c', 'd', 'e', 'f', 'g' ,'h', '\n']
         ]
         self.generated_table = [] # store the compiled table
         self.cache = ' '
@@ -58,9 +58,9 @@ class Model:
             else:
                 self.error = 'is not your turn'
             #  compile the table to a string
-            for j in self.Table:
-                for i in j:
-                    self.generated_table.append(i)
+            for row in self.Table:
+                for piece in row:
+                    self.generated_table.append(piece)
             self.generated_table.insert(0, '')
             self.view = self.cache.join(self.generated_table) # join table
         #  throw error if you try eat in wrong direction
@@ -68,10 +68,10 @@ class Model:
             self.error = 'try on other direction'
 
     def __traslate_words(self): # Translate coordiantes for the error 'you need eat'
-        translate = []
-        for translate0 in self.force_eat:
-            translate.append(self.Table[8][translate0[1]] + self.Table[translate0[0]][0])
-        return translate # return coordinate where you can eat
+        translates = []
+        for translate in self.force_eat:
+            translates.append(self.Table[8][translate[1]] + self.Table[translate[0]][0])
+        return translates # return coordinate where you can eat
 
     def return_error_move(self): # return errors for the view
         return self.error
@@ -94,133 +94,133 @@ class Model:
         return self.view
 
     #  moves and eat recursive
-    def eat_recursive(self, cordinate0, cordinate1, direction): # generate move and eat enemy tokens
-        self.token = self.Table[cordinate0][cordinate1] # current token
+    def eat_recursive(self, coordinate_x, coordinate_y, direction): # generate move and eat enemy tokens
+        self.token = self.Table[coordinate_x][coordinate_y] # current token
         if self.token == '⚫' or self.token == 'B':
             # black piece validation
             if direction == 'rd':
-                if self.Table[cordinate0 + 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 + 1] == 'R':
+                if self.Table[coordinate_x + 1][coordinate_y + 1] == '⭕' or self.Table[coordinate_x + 1][coordinate_y + 1] == 'R':
 
-                    if self.Table[cordinate0 + 2][cordinate1 + 2] == '⬛':
-                        self.Table[cordinate0][cordinate1] = '⬛'
-                        self.Table[cordinate0 + 1][cordinate1 + 1] = '⬛'
-                        if (cordinate0 + 2) == 7: # transform the token when it reaches the beginning of the enemy
-                            self.Table[cordinate0 + 2][cordinate1 + 2] = 'B'
+                    if self.Table[coordinate_x + 2][coordinate_y + 2] == '⬛':
+                        self.Table[coordinate_x][coordinate_y] = '⬛'
+                        self.Table[coordinate_x + 1][coordinate_y + 1] = '⬛'
+                        if (coordinate_x + 2) == 7 and self.token == '⚫': # transform the token when it reaches the beginning of the enemy
+                            self.Table[coordinate_x + 2][coordinate_y + 2] = 'B'
                             return ''
                         else:
-                            self.Table[cordinate0 + 2][cordinate1 + 2] = self.token
-                        return self.eat_recursive((cordinate0 + 2), (cordinate1 + 2), 'rd') # Call the method again for eat in the same direction
+                            self.Table[coordinate_x + 2][coordinate_y + 2] = self.token
+                        return self.eat_recursive((coordinate_x + 2), (coordinate_y + 2), 'rd') # Call the method again for eat in the same direction
                     # If cant eat in the same direction check for the other direction
-                    if self.Table[cordinate0 + 2][cordinate1 + 2] != '⬛':
+                    if self.Table[coordinate_x + 2][coordinate_y + 2] != '⬛':
                         # Check if can eat in ld direction before call the method
-                        if self.Table[cordinate0 + 1][cordinate1 - 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 - 1] == 'R':
-                            if self.Table[cordinate0 + 2][cordinate1 - 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'ld')
+                        if self.Table[coordinate_x + 1][coordinate_y - 1] == '⭕' or self.Table[coordinate_x + 1][coordinate_y - 1] == 'R':
+                            if self.Table[coordinate_x + 2][coordinate_y - 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'ld')
                         else:
                             return '' # Stop the cycle if cant eat
 
                 else:
                     if self.token == 'B': # if token is a dame check for ru moevement
-                        if self.Table[cordinate0 - 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 - 1][cordinate1 + 1] == 'R':
-                            if self.Table[cordinate0 - 2][cordinate1 + 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'ru')
+                        if self.Table[coordinate_x - 1][coordinate_y + 1] == '⭕' or self.Table[coordinate_x - 1][coordinate_y + 1] == 'R':
+                            if self.Table[coordinate_x - 2][coordinate_y + 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'ru')
                     # If a token find anything in the same direction after eat, check if can eat in the other direction, ld
-                    if self.Table[cordinate0 + 1][cordinate1 - 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 - 1] == 'R':
-                            if self.Table[cordinate0 + 2][cordinate1 - 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'ld')
+                    if self.Table[coordinate_x + 1][coordinate_y - 1] == '⭕' or self.Table[coordinate_x + 1][coordinate_y - 1] == 'R':
+                            if self.Table[coordinate_x + 2][coordinate_y - 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'ld')
                     else:
                         return '' # Stop the cycle if cant eat
 
             if direction == 'ld':
-                if self.Table[cordinate0 + 1][cordinate1 - 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 - 1] == 'R':
+                if self.Table[coordinate_x + 1][coordinate_y - 1] == '⭕' or self.Table[coordinate_x + 1][coordinate_y - 1] == 'R':
 
-                    if self.Table[cordinate0 + 2][cordinate1 - 2] == '⬛':
-                        self.Table[cordinate0][cordinate1] = '⬛'
-                        self.Table[cordinate0 + 1][cordinate1 - 1] = '⬛'
-                        if (cordinate0 + 2) == 7: # # transform the token when it reaches the beginning of the enemy
-                            self.Table[cordinate0 + 2][cordinate1 - 2] = 'B'
+                    if self.Table[coordinate_x + 2][coordinate_y - 2] == '⬛':
+                        self.Table[coordinate_x][coordinate_y] = '⬛'
+                        self.Table[coordinate_x + 1][coordinate_y - 1] = '⬛'
+                        if (coordinate_x + 2) == 7 and self.token == '⚫': # # transform the token when it reaches the beginning of the enemy
+                            self.Table[coordinate_x + 2][coordinate_y - 2] = 'B'
                             return ''
                         else:
-                            self.Table[cordinate0 + 2][cordinate1 - 2] = self.token
-                        return self.eat_recursive((cordinate0 + 2), (cordinate1 - 2), 'ld')
+                            self.Table[coordinate_x + 2][coordinate_y - 2] = self.token
+                        return self.eat_recursive((coordinate_x + 2), (coordinate_y - 2), 'ld')
 
-                    if self.Table[cordinate0 + 2][cordinate1 - 2] != '⬛':
-                        if self.Table[cordinate0 + 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 + 1] == 'R':
-                            if self.Table[cordinate0 + 2][cordinate1 + 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'rd')
+                    if self.Table[coordinate_x + 2][coordinate_y - 2] != '⬛':
+                        if self.Table[coordinate_x + 1][coordinate_y + 1] == '⭕' or self.Table[coordinate_x + 1][coordinate_y + 1] == 'R':
+                            if self.Table[coordinate_x + 2][coordinate_y + 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'rd')
                         return ''
 
                 else:
 
                     if self.token == 'B':
-                        if self.Table[cordinate0 - 1][cordinate1 - 1] == '⭕' or self.Table[cordinate0 - 1][cordinate1 - 1] == 'R':
-                            if self.Table[cordinate0 - 2][cordinate1 - 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'lu')
-                    if self.Table[cordinate0 + 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 + 1] == 'R':
-                        if self.Table[cordinate0 + 2][cordinate1 + 2] == '⬛':
-                            return self.eat_recursive((cordinate0), (cordinate1), 'rd')
+                        if self.Table[coordinate_x - 1][coordinate_y - 1] == '⭕' or self.Table[coordinate_x - 1][coordinate_y - 1] == 'R':
+                            if self.Table[coordinate_x - 2][coordinate_y - 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'lu')
+                    if self.Table[coordinate_x + 1][coordinate_y + 1] == '⭕' or self.Table[coordinate_x + 1][coordinate_y + 1] == 'R':
+                        if self.Table[coordinate_x + 2][coordinate_y + 2] == '⬛':
+                            return self.eat_recursive((coordinate_x), (coordinate_y), 'rd')
                     return ''
 
             # red piece validation
         if self.token == '⭕' or self.token == 'R': # make the movements of the red pieces
             if direction == 'ru':
 
-                if self.Table[cordinate0 - 1][cordinate1 + 1] == '⚫' or self.Table[cordinate0 - 1][cordinate1 + 1] == 'B':
-                    if self.Table[cordinate0 - 2][cordinate1 + 2] == '⬛':
-                        self.Table[cordinate0][cordinate1] = '⬛'
-                        self.Table[cordinate0 - 1][cordinate1 + 1] = '⬛'
-                        if (cordinate0 - 2) == 0: # transform the token when it reaches the beginning of the enemy
-                            self.Table[cordinate0 - 2][cordinate1 + 2] = 'R'
+                if self.Table[coordinate_x - 1][coordinate_y + 1] == '⚫' or self.Table[coordinate_x - 1][coordinate_y + 1] == 'B':
+                    if self.Table[coordinate_x - 2][coordinate_y + 2] == '⬛':
+                        self.Table[coordinate_x][coordinate_y] = '⬛'
+                        self.Table[coordinate_x - 1][coordinate_y + 1] = '⬛'
+                        if (coordinate_x - 2) == 0 and self.token == '⭕': # transform the token when it reaches the beginning of the enemy
+                            self.Table[coordinate_x - 2][coordinate_y + 2] = 'R'
                             return ''
                         else:
-                            self.Table[cordinate0 - 2][cordinate1 + 2] = self.token
-                        return self.eat_recursive((cordinate0 - 2), (cordinate1 + 2), 'ru')
+                            self.Table[coordinate_x - 2][coordinate_y + 2] = self.token
+                        return self.eat_recursive((coordinate_x - 2), (coordinate_y + 2), 'ru')
 
-                    if self.Table[cordinate0 - 2][cordinate1 + 2] != '⬛':
-                        if self.Table[cordinate0 - 1][cordinate1 - 1] == '⚫' or self.Table[cordinate0 - 1][cordinate1 - 1] == 'B':
-                            if self.Table[cordinate0 - 2][cordinate1 - 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'lu')
+                    if self.Table[coordinate_x - 2][coordinate_y + 2] != '⬛':
+                        if self.Table[coordinate_x - 1][coordinate_y - 1] == '⚫' or self.Table[coordinate_x - 1][coordinate_y - 1] == 'B':
+                            if self.Table[coordinate_x - 2][coordinate_y - 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'lu')
                         else:
                             return ''
 
                 else:
                     if self.token == 'R':
-                        if self.Table[cordinate0 + 1][cordinate1 + 1] == '⚫' or self.Table[cordinate0 + 1][cordinate1 + 1] == 'B':
-                            if self.Table[cordinate0 + 2][cordinate1 + 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'rd')
-                    if self.Table[cordinate0 - 1][cordinate1 - 1] == '⚫' or self.Table[cordinate0 - 1][cordinate1 - 1] == 'B':
-                        if self.Table[cordinate0 - 2][cordinate1 - 2] == '⬛':
-                            return self.eat_recursive((cordinate0), (cordinate1), 'lu')
+                        if self.Table[coordinate_x + 1][coordinate_y + 1] == '⚫' or self.Table[coordinate_x + 1][coordinate_y + 1] == 'B':
+                            if self.Table[coordinate_x + 2][coordinate_y + 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'rd')
+                    if self.Table[coordinate_x - 1][coordinate_y - 1] == '⚫' or self.Table[coordinate_x - 1][coordinate_y - 1] == 'B':
+                        if self.Table[coordinate_x - 2][coordinate_y - 2] == '⬛':
+                            return self.eat_recursive((coordinate_x), (coordinate_y), 'lu')
                     else:
                         return ''
 
             if direction == 'lu':
-                if self.Table[cordinate0 - 1][cordinate1 - 1] == '⚫' or self.Table[cordinate0 - 1][cordinate1 - 1] == 'B':
-                    if self.Table[cordinate0 - 2][cordinate1 - 2] == '⬛':
-                        self.Table[cordinate0][cordinate1] = '⬛'
-                        self.Table[cordinate0 - 1][cordinate1 - 1] = '⬛'
-                        if (cordinate0 - 2) == 0: # if you manage to reach the opposite side he become a dame
-                            self.Table[cordinate0 - 2][cordinate1 - 2] = 'R'
+                if self.Table[coordinate_x - 1][coordinate_y - 1] == '⚫' or self.Table[coordinate_x - 1][coordinate_y - 1] == 'B':
+                    if self.Table[coordinate_x - 2][coordinate_y - 2] == '⬛':
+                        self.Table[coordinate_x][coordinate_y] = '⬛'
+                        self.Table[coordinate_x - 1][coordinate_y - 1] = '⬛'
+                        if (coordinate_x - 2) == 0 and self.token == '⭕': # if you manage to reach the opposite side he become a dame
+                            self.Table[coordinate_x - 2][coordinate_y - 2] = 'R'
                             return ''
                         else:
-                            self.Table[cordinate0 - 2][cordinate1 - 2] = self.token
-                        return self.eat_recursive((cordinate0 - 2), (cordinate1 - 2), 'lu')
+                            self.Table[coordinate_x - 2][coordinate_y - 2] = self.token
+                        return self.eat_recursive((coordinate_x - 2), (coordinate_y - 2), 'lu')
 
-                    if self.Table[cordinate0 - 2][cordinate1 - 2] != '⬛':
-                        if self.Table[cordinate0 - 1][cordinate1 + 1] == '⚫' or self.Table[cordinate0 - 1][cordinate1 + 1] == 'B':
-                            if self.Table[cordinate0 - 2][cordinate1 + 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'ru')
+                    if self.Table[coordinate_x - 2][coordinate_y - 2] != '⬛':
+                        if self.Table[coordinate_x - 1][coordinate_y + 1] == '⚫' or self.Table[coordinate_x - 1][coordinate_y + 1] == 'B':
+                            if self.Table[coordinate_x - 2][coordinate_y + 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'ru')
                         else:
                             return ''
 
                 else:
                     if self.token == 'R':
-                        if self.Table[cordinate0 + 1][cordinate1 - 1] == '⚫' or self.Table[cordinate0 + 1][cordinate1 - 1] == 'B':
-                            if self.Table[cordinate0 + 2][cordinate1 - 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'ld')
-                    if self.Table[cordinate0 - 1][cordinate1 + 1] == '⚫' or self.Table[cordinate0 - 1][cordinate1 + 1] == 'B':
-                        if self.Table[cordinate0 - 2][cordinate1 + 2] == '⬛':
-                            return self.eat_recursive((cordinate0), (cordinate1), 'ru')
+                        if self.Table[coordinate_x + 1][coordinate_y - 1] == '⚫' or self.Table[coordinate_x + 1][coordinate_y - 1] == 'B':
+                            if self.Table[coordinate_x + 2][coordinate_y - 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'ld')
+                    if self.Table[coordinate_x - 1][coordinate_y + 1] == '⚫' or self.Table[coordinate_x - 1][coordinate_y + 1] == 'B':
+                        if self.Table[coordinate_x - 2][coordinate_y + 2] == '⬛':
+                            return self.eat_recursive((coordinate_x), (coordinate_y), 'ru')
                     else:
                         return ''
 
@@ -228,53 +228,53 @@ class Model:
         if self.token == 'B': # make the movements of the black dame pieces
             if direction == 'ru':
                 # Dame movement is like normal movemnt but for the opposite direction
-                if self.Table[cordinate0 - 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 - 1][cordinate1 + 1] == 'R':
-                    if self.Table[cordinate0 - 2][cordinate1 + 2] == '⬛':
-                        self.Table[cordinate0][cordinate1] = '⬛'
-                        self.Table[cordinate0 - 1][cordinate1 + 1] = '⬛'
-                        self.Table[cordinate0 - 2][cordinate1 + 2] = self.token
-                        return self.eat_recursive((cordinate0 - 2), (cordinate1 + 2), 'ru')
+                if self.Table[coordinate_x - 1][coordinate_y + 1] == '⭕' or self.Table[coordinate_x - 1][coordinate_y + 1] == 'R':
+                    if self.Table[coordinate_x - 2][coordinate_y + 2] == '⬛':
+                        self.Table[coordinate_x][coordinate_y] = '⬛'
+                        self.Table[coordinate_x - 1][coordinate_y + 1] = '⬛'
+                        self.Table[coordinate_x - 2][coordinate_y + 2] = self.token
+                        return self.eat_recursive((coordinate_x - 2), (coordinate_y + 2), 'ru')
 
-                    if self.Table[cordinate0 - 2][cordinate1 + 2] != '⬛':
-                        if self.Table[cordinate0 - 1][cordinate1 - 1] == '⭕' or self.Table[cordinate0 - 1][cordinate1 - 1] == 'R':
-                            if self.Table[cordinate0 - 2][cordinate1 - 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'lu')
+                    if self.Table[coordinate_x - 2][coordinate_y + 2] != '⬛':
+                        if self.Table[coordinate_x - 1][coordinate_y - 1] == '⭕' or self.Table[coordinate_x - 1][coordinate_y - 1] == 'R':
+                            if self.Table[coordinate_x - 2][coordinate_y - 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'lu')
                     else:
                         return ''
 
                 else:
-                    if self.Table[cordinate0 + 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 + 1] == 'R':
-                        if self.Table[cordinate0 + 2][cordinate1 + 2] == '⬛':
-                            return self.eat_recursive((cordinate0), (cordinate1), 'rd')
-                    if self.Table[cordinate0 - 1][cordinate1 - 1] == '⭕' or self.Table[cordinate0 - 1][cordinate1 - 1] == 'R':
-                        if self.Table[cordinate0 - 2][cordinate1 - 2] == '⬛':
-                            return self.eat_recursive((cordinate0), (cordinate1), 'lu')
+                    if self.Table[coordinate_x + 1][coordinate_y + 1] == '⭕' or self.Table[coordinate_x + 1][coordinate_y + 1] == 'R':
+                        if self.Table[coordinate_x + 2][coordinate_y + 2] == '⬛':
+                            return self.eat_recursive((coordinate_x), (coordinate_y), 'rd')
+                    if self.Table[coordinate_x - 1][coordinate_y - 1] == '⭕' or self.Table[coordinate_x - 1][coordinate_y - 1] == 'R':
+                        if self.Table[coordinate_x - 2][coordinate_y - 2] == '⬛':
+                            return self.eat_recursive((coordinate_x), (coordinate_y), 'lu')
                         else:
                             return ''
 
             if direction == 'lu':
-                if self.Table[cordinate0 - 1][cordinate1 - 1] == '⭕' or self.Table[cordinate0 - 1][cordinate1 - 1] == 'R':
+                if self.Table[coordinate_x - 1][coordinate_y - 1] == '⭕' or self.Table[coordinate_x - 1][coordinate_y - 1] == 'R':
 
-                    if self.Table[cordinate0 - 2][cordinate1 - 2] == '⬛':
-                        self.Table[cordinate0][cordinate1] = '⬛'
-                        self.Table[cordinate0 - 1][cordinate1 - 1] = '⬛'
-                        self.Table[cordinate0 - 2][cordinate1 - 2] = self.token
-                        return self.eat_recursive((cordinate0 - 2), (cordinate1 - 2), 'lu')
+                    if self.Table[coordinate_x - 2][coordinate_y - 2] == '⬛':
+                        self.Table[coordinate_x][coordinate_y] = '⬛'
+                        self.Table[coordinate_x - 1][coordinate_y - 1] = '⬛'
+                        self.Table[coordinate_x - 2][coordinate_y - 2] = self.token
+                        return self.eat_recursive((coordinate_x - 2), (coordinate_y - 2), 'lu')
 
-                    if self.Table[cordinate0 - 2][cordinate1 - 2] != '⬛':
-                        if self.Table[cordinate0 - 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 - 1][cordinate1 + 1] == 'R':
-                            if self.Table[cordinate0 - 2][cordinate1 + 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'ru')
+                    if self.Table[coordinate_x - 2][coordinate_y - 2] != '⬛':
+                        if self.Table[coordinate_x - 1][coordinate_y + 1] == '⭕' or self.Table[coordinate_x - 1][coordinate_y + 1] == 'R':
+                            if self.Table[coordinate_x - 2][coordinate_y + 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'ru')
                         else:
                             return ''
 
                 else:
-                    if self.Table[cordinate0 + 1][cordinate1 - 1] == '⭕' or self.Table[cordinate0 + 1][cordinate1 - 1] == 'R':
-                        if self.Table[cordinate0 + 2][cordinate1 - 2] == '⬛':
-                            return self.eat_recursive((cordinate0), (cordinate1), 'ld')
-                    if self.Table[cordinate0 - 1][cordinate1 + 1] == '⭕' or self.Table[cordinate0 - 1][cordinate1 + 1] == 'R':
-                        if self.Table[cordinate0 - 2][cordinate1 + 2] == '⬛':
-                            return self.eat_recursive((cordinate0), (cordinate1), 'ru')
+                    if self.Table[coordinate_x + 1][coordinate_y - 1] == '⭕' or self.Table[coordinate_x + 1][coordinate_y - 1] == 'R':
+                        if self.Table[coordinate_x + 2][coordinate_y - 2] == '⬛':
+                            return self.eat_recursive((coordinate_x), (coordinate_y), 'ld')
+                    if self.Table[coordinate_x - 1][coordinate_y + 1] == '⭕' or self.Table[coordinate_x - 1][coordinate_y + 1] == 'R':
+                        if self.Table[coordinate_x - 2][coordinate_y + 2] == '⬛':
+                            return self.eat_recursive((coordinate_x), (coordinate_y), 'ru')
                     else:
                         return ''
 
@@ -282,53 +282,53 @@ class Model:
         if self.token == 'R': # make the movements of the red dame pieces
 
             if direction == 'rd':
-                if self.Table[cordinate0 + 1][cordinate1 + 1] == '⚫' or self.Table[cordinate0 + 1][cordinate1 + 1] == 'B':
-                    if self.Table[cordinate0 + 2][cordinate1 + 2] == '⬛':
-                        self.Table[cordinate0][cordinate1] = '⬛'
-                        self.Table[cordinate0 + 1][cordinate1 + 1] = '⬛'
-                        self.Table[cordinate0 + 2][cordinate1 + 2] = self.token
-                        return self.eat_recursive((cordinate0 + 2), (cordinate1 + 2), 'rd')
+                if self.Table[coordinate_x + 1][coordinate_y + 1] == '⚫' or self.Table[coordinate_x + 1][coordinate_y + 1] == 'B':
+                    if self.Table[coordinate_x + 2][coordinate_y + 2] == '⬛':
+                        self.Table[coordinate_x][coordinate_y] = '⬛'
+                        self.Table[coordinate_x + 1][coordinate_y + 1] = '⬛'
+                        self.Table[coordinate_x + 2][coordinate_y + 2] = self.token
+                        return self.eat_recursive((coordinate_x + 2), (coordinate_y + 2), 'rd')
 
-                    if self.Table[cordinate0 + 2][cordinate1 + 2] != '⬛':
-                        if self.Table[cordinate0 + 1][cordinate1 - 1] == '⚫' or self.Table[cordinate0 + 1][cordinate1 - 1] == 'B':
-                            if self.Table[cordinate0 + 2][cordinate1 - 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'ld')
+                    if self.Table[coordinate_x + 2][coordinate_y + 2] != '⬛':
+                        if self.Table[coordinate_x + 1][coordinate_y - 1] == '⚫' or self.Table[coordinate_x + 1][coordinate_y - 1] == 'B':
+                            if self.Table[coordinate_x + 2][coordinate_y - 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'ld')
                         else:
                             return ''
 
                 else:
-                    if self.Table[cordinate0 - 1][cordinate1 + 1] == '⚫' or self.Table[cordinate0 - 1][cordinate1 + 1] == 'B':
-                        if self.Table[cordinate0 - 2][cordinate1 + 2] == '⬛':
-                            return self.eat_recursive((cordinate0), (cordinate1), 'ru')
-                    if self.Table[cordinate0 + 1][cordinate1 - 1] == '⚫' or self.Table[cordinate0 + 1][cordinate1 - 1] == 'B':
-                        if self.Table[cordinate0 + 2][cordinate1 - 2] == '⬛':
-                            return self.eat_recursive((cordinate0), (cordinate1), 'ld')
+                    if self.Table[coordinate_x - 1][coordinate_y + 1] == '⚫' or self.Table[coordinate_x - 1][coordinate_y + 1] == 'B':
+                        if self.Table[coordinate_x - 2][coordinate_y + 2] == '⬛':
+                            return self.eat_recursive((coordinate_x), (coordinate_y), 'ru')
+                    if self.Table[coordinate_x + 1][coordinate_y - 1] == '⚫' or self.Table[coordinate_x + 1][coordinate_y - 1] == 'B':
+                        if self.Table[coordinate_x + 2][coordinate_y - 2] == '⬛':
+                            return self.eat_recursive((coordinate_x), (coordinate_y), 'ld')
                     else:
                         return ''
 
             if direction == 'ld':
 
-                if self.Table[cordinate0 + 1][cordinate1 - 1] == '⚫' or self.Table[cordinate0 + 1][cordinate1 - 1] == 'B':
-                    if self.Table[cordinate0 + 2][cordinate1 - 2] == '⬛':
-                        self.Table[cordinate0][cordinate1] = '⬛'
-                        self.Table[cordinate0 + 1][cordinate1 - 1] = '⬛'
-                        self.Table[cordinate0 + 2][cordinate1 - 2] = self.token
-                        return self.eat_recursive((cordinate0 + 2), (cordinate1 - 2), 'ld')
+                if self.Table[coordinate_x + 1][coordinate_y - 1] == '⚫' or self.Table[coordinate_x + 1][coordinate_y - 1] == 'B':
+                    if self.Table[coordinate_x + 2][coordinate_y - 2] == '⬛':
+                        self.Table[coordinate_x][coordinate_y] = '⬛'
+                        self.Table[coordinate_x + 1][coordinate_y - 1] = '⬛'
+                        self.Table[coordinate_x + 2][coordinate_y - 2] = self.token
+                        return self.eat_recursive((coordinate_x + 2), (coordinate_y - 2), 'ld')
 
-                    if self.Table[cordinate0 + 2][cordinate1 - 2] != '⬛':
-                        if self.Table[cordinate0 + 1][cordinate1 + 1] == '⚫' or self.Table[cordinate0 + 1][cordinate1 + 1] == 'B':
-                            if self.Table[cordinate0 + 2][cordinate1 + 2] == '⬛':
-                                return self.eat_recursive((cordinate0), (cordinate1), 'rd')
+                    if self.Table[coordinate_x + 2][coordinate_y - 2] != '⬛':
+                        if self.Table[coordinate_x + 1][coordinate_y + 1] == '⚫' or self.Table[coordinate_x + 1][coordinate_y + 1] == 'B':
+                            if self.Table[coordinate_x + 2][coordinate_y + 2] == '⬛':
+                                return self.eat_recursive((coordinate_x), (coordinate_y), 'rd')
                         else:
                             return ''
 
                 else:
-                    if self.Table[cordinate0 - 1][cordinate1 - 1] == '⚫' or self.Table[cordinate0 - 1][cordinate1 - 1] == 'B':
-                        if self.Table[cordinate0 - 2][cordinate1 - 2] == '⬛':
-                            return self.eat_recursive((cordinate0), (cordinate1), 'lu')
-                    if self.Table[cordinate0 + 1][cordinate1 + 1] == '⚫' or self.Table[cordinate0 + 1][cordinate1 + 1] == 'B':
-                        if self.Table[cordinate0 + 2][cordinate1 + 2] == '⬛':
-                            return self.eat_recursive((cordinate0), (cordinate1), 'rd')
+                    if self.Table[coordinate_x - 1][coordinate_y - 1] == '⚫' or self.Table[coordinate_x - 1][coordinate_y - 1] == 'B':
+                        if self.Table[coordinate_x - 2][coordinate_y - 2] == '⬛':
+                            return self.eat_recursive((coordinate_x), (coordinate_y), 'lu')
+                    if self.Table[coordinate_x + 1][coordinate_y + 1] == '⚫' or self.Table[coordinate_x + 1][coordinate_y + 1] == 'B':
+                        if self.Table[coordinate_x + 2][coordinate_y + 2] == '⬛':
+                            return self.eat_recursive((coordinate_x), (coordinate_y), 'rd')
                     else:
                         return ''
         else:

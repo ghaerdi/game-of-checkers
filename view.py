@@ -30,17 +30,17 @@ class View:
         self.cache[:] # clean cache
 
     def consult_dead_token(self): # consult player winner
-        stade = [0, -1]
+        stades = [0, 0]
 
         for token in range(len(self.view)):
             if self.view[token] == '⭕' or self.view[token] == 'R':
-                stade[0] += 1
+                stades[0] += 1
             if self.view[token] == '⚫' or self.view[token] == 'B':
-                stade[1] += 1
+                stades[1] += 1
 
-        if stade[0] == 0:
+        if stades[0] == 0:
             return 'black'
-        if stade[1] == 0:
+        if stades[1] == 0:
             return 'red'
 
     def start_render_view(self, turn): # rende start game
