@@ -1,6 +1,6 @@
 # 🎯 Checkers
 
-##### Made by [Erick sosa](https://github.com/ericksosagarcia) and [Gil Santana](https://github.com/ghaerdi)
+##### Made by [Erick sosa](https://github.com/buttercubz) and [Gil Santana](https://github.com/ghaerdi)
 
 ![Checkers](https://i.ibb.co/dgb4M68/Captura-de-pantalla-de-2020-02-02-17-47-59.png)
 
